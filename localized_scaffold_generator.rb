@@ -21,7 +21,11 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
     lib_dir = File.join(File.dirname(__FILE__), 'lib')
     locale_dir = File.join(File.dirname(__FILE__), 'templates', 'locale')
 
-    FileUtils.cp_r File.join(lib_dir, 'locale'), File.join('lib')
+    begin
+      FileUtils.cp_r File.join(lib_dir, 'locale'), File.join('lib')
+    rescue Exception
+      # Already there, so just ignore...
+    end
 
     Dir.entries(locale_dir).delete_if { |f| not f.match(/.*\.yml$/) }.each do |l|
       m.template("locale/#{l}", File.join('app/locale', "#{file_name}.#{l}"))
