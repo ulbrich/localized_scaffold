@@ -1,0 +1,35 @@
+de:
+  activerecord:
+    models:
+      <%= file_name %>: "<%= class_name %>"
+
+    attributes:
+      <%= file_name %>:
+        <%- attributes.each do |a| -%>
+        <%= a.name %>: "<%= a.name.humanize %>"
+        <%- end -%>
+
+  <%= file_name %>:
+    cmds:
+      new: "<%= class_name %> anlegen"
+
+    error:
+      not_found: "<%= class_name %> nicht gefunden."
+
+    create:
+      flash: "<%= class_name %> erfolgreich angelegt."
+
+    destroy:
+      flash: "<%= class_name %> erfolgreich gelöscht."
+
+    edit:
+      title: "<%= class_name %> bearbeiten"
+
+    index:
+      title: "Alle <%= plural_name.humanize %>"
+
+    new:
+      title: "<%= class_name %> anlegen"
+
+    update:
+      flash: "<%= class_name %> erfolgreich gespeichert."

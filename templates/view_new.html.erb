@@ -1,0 +1,16 @@
+<h1><%%= t('<%= file_name %>.new.title') %></h1>
+
+<%% form_for(@<%= singular_name %>) do |f| %>
+  <%%= f.error_messages %>
+
+  <%%= render :partial => 'form', :locals => { :f => f } %>
+
+  <p>
+    <%%= f.submit t('standard.cmds.create') %>
+
+    <span class="decent">
+      <%%= t('standard.labels.or') %>
+      <%%= link_to t('standard.cmds.cancel'), <%= plural_name %>_path %>
+    </span>
+  </p>
+<%% end %>

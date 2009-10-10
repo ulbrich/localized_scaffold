@@ -1,0 +1,38 @@
+<h1><%%= t('<%= file_name %>.index.title') %></h1>
+
+<table class="wide">
+  <tr>
+  <% for attribute in attributes -%>
+    <th><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %></th>
+  <% end -%>
+    <th>&nbsp;</th>
+  </tr>
+
+  <%% @<%= plural_name %>.each do |<%= singular_name %>| %>
+    <tr>
+    <% for attribute in attributes -%>
+      <td><%%=h <%= singular_name %>.<%= attribute.name %> %></td>
+    <% end -%>
+
+      <td class="last">
+        <%%= link_to t('standard.cmds.show'), <%= singular_name %> %> |
+        <%%= link_to t('standard.cmds.edit'), edit_<%= singular_name %>_path(<%= singular_name %>) %> |
+        <%%= link_to t('standard.cmds.destroy'), <%= singular_name %>,
+          :confirm => t('standard.labels.are_you_sure'), :method => :delete %>
+      </td>
+    </tr>
+  <%% end %>
+</table>
+
+<p>
+<%- if has_will_paginate? -%>
+  <%%= pagination @<%= table_name %> %>
+
+<%- end -%>
+  <%%= link_to t('<%= file_name %>.cmds.new'), new_<%= singular_name %>_path %>
+
+  <span class="decent">
+    <%%= t('standard.labels.or') %>
+    <%%= link_to t('standard.cmds.home'), defined?(home_path) ? home_path : '/' %>
+  </span>
+</p>

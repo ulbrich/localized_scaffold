@@ -1,0 +1,7 @@
+<% for attribute in attributes -%>
+<p>
+  <%%= f.label t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %><br />
+  <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
+</p>
+
+<% end -%>

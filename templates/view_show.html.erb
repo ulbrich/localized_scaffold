@@ -1,0 +1,16 @@
+<% for attribute in attributes -%>
+<p>
+  <b><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %>:</b>
+  <%%=h @<%= singular_name %>.<%= attribute.name %> %>
+</p>
+
+<% end -%>
+
+<p>
+  <%%= link_to t('standard.cmds.back'), <%= plural_name %>_path %>
+
+  <span class="decent">
+    <%%= t('standard.labels.or') %>
+    <%%= link_to t('standard.cmds.edit'), edit_<%= singular_name %>_path(@<%= singular_name %>) %>
+  </span>
+</p>

@@ -1,0 +1,21 @@
+Description:
+    Scaffolds with the same parameters as the orginal "scaffold" generator but
+    produces localized views and controller flashes.
+
+    Automatically adds pagination if gem "mislav-will_paginate" is available,
+    so be sure to add a require for "will_paginate" or you'll get an exeption.
+
+    The generator will copy and generate all needed localization files, but
+    you need to add the following lines to the initialization of Rails in
+    "environment.rb" or you'll see only missing localization strings.
+
+    Rails::Initializer.run do |config|
+      config.i18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')]
+      config.i18n.load_path += Dir[Rails.root.join('app', 'locale', '*.{rb,yml}')]
+      config.i18n.default_locale = :de
+    end
+
+Examples:
+    `./script/generate localized_scaffold post`
+    `./script/generate localized_scaffold post title:string body:text published:boolean`
+    `./script/generate localized_scaffold purchase order_id:integer amount:decimal`
