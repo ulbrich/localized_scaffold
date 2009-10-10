@@ -91,7 +91,6 @@ en:
       hits: %s hits
       hours: hours
       loading: Loading data...
-      logged_in_as: Logged in as %s
       no: "No"
       or: "or"
       page: Page
