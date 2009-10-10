@@ -1,10 +1,13 @@
 README
 
+Provides a generator scaffolding with the same parameters as the orginal
+"scaffold" generator but produces localized views and controller flashes.
+
 Here are the steps to get going:
 
 > rails foo
 > cd foo
-> git clone git://github.com/ulbrich/localized_scaffold.git vendor/generators/localized_scaffold
+> script/plugin install git://github.com/ulbrich/localized_scaffold.git
 
 Optionally install the "will paginate" gem to automatically add pagination
 using this library for every generated scaffold.
