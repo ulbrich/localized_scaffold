@@ -32,6 +32,9 @@ lines to the Rails initializer (only the three config lines...):
     config.i18n.default_locale = :de
   end
 
+The plugin will store a standard set of localization files in "lib/locale" and
+generates a set of locale files per scaffold in "app/locale".
+
 Have a look at the options supported by the generator:
 
   > script/generate localized_scaffold
