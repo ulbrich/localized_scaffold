@@ -36,7 +36,7 @@ Have a look at the options supported by the generator:
 
   > script/generate localized_scaffold
 
-For the first try, just add a sample scaffold:
+As a first test, just add a sample scaffold:
 
   > script/generate localized_scaffold bar name:string seats:integer
   > rake db:migrate
