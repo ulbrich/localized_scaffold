@@ -12,7 +12,7 @@ to have a test drive.
 
 == Installation and usage
 
-Here are the steps to a first impression about the plugin:
+Here are the steps to get a first impression about the plugin:
 
   > rails foo
   > cd foo
