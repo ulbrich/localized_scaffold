@@ -95,8 +95,8 @@ de:
     errors:
       template:
         header:
-          one:    "Konnte dieses {{model}}-Objekt nicht speichern: 1 Fehler"
-          other:  "Konnte dieses {{model}}-Objekt nicht speichern: {{count}} Fehler"
+          one: "Konnte dieses {{model}}-Objekt nicht speichern: 1 Fehler"
+          other: "Konnte dieses {{model}}-Objekt nicht speichern: {{count}} Fehler"
         body: "Bitte überprüfen Sie die folgenden Felder:"
 
       messages:
@@ -119,4 +119,3 @@ de:
         less_than_or_equal_to: "muss kleiner oder gleich {{count}} sein"
         odd: "muss ungerade sein"
         even: "muss gerade sein"
-      models:
