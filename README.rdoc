@@ -8,7 +8,7 @@ localized views and localized controller flashes plus some little nicer user
 interface.
 
 Just give it a try and toss it away if you don't like it -- it's pretty easy
-to give it a try.
+to have a test drive.
 
 == Installation and usage
 
