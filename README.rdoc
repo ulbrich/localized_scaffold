@@ -1,0 +1,73 @@
+= Localized Scaffold
+
+== About
+
+Rails plugin "localized_scaffold" provides a generator for scaffolding with
+the same parameters as the orginal "scaffold" generator but producing
+localized views and localized controller flashes plus some little nicer user
+interface.
+
+Just give it a try and toss it away if you don't like it -- it's pretty easy
+to give it a try.
+
+== Installation and usage
+
+Here are the steps to a first impression about the plugin:
+
+  > rails foo
+  > cd foo
+  > script/plugin install git://github.com/ulbrich/localized_scaffold.git
+
+Optionally install the "will paginate" gem to automatically add pagination
+using this library for every generated scaffold.
+
+  > sudo gem install mislav-will_paginate
+
+Edit the environment file ("config/environment.rb") and add the following
+lines to the Rails initializer (only the three config lines...):
+
+  Rails::Initializer.run do |config|
+    config.i18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')]
+    config.i18n.load_path += Dir[Rails.root.join('app', 'locale', '*.{rb,yml}')]
+    config.i18n.default_locale = :de
+  end
+
+Have a look at the options supported by the generator:
+
+  > script/generate localized_scaffold
+
+For the first try, just add a sample scaffold:
+
+  > script/generate localized_scaffold bar name:string seats:integer
+  > rake db:migrate
+
+  > script/server
+
+Now open your browser and visit "http://localhost:3000/bars". Have fun!
+And please contribute by sending in your localized versions of the default
+and standard strings. :-)
+
+== Copyright & License
+
+Copyright (c) 2009 Jan Ulbrich
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
