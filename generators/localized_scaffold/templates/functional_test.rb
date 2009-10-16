@@ -17,7 +17,11 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
       post :create, :<%= file_name %> => { }
     end
 
-    assert_redirected_to <%= file_name %>_path(assigns(:<%= file_name %>))
+<%- if has_parent? -%>
+    assert_redirected_to <%= path_of_with_parent_if_any(nil, "assigns(:#{file_name})", "assigns(:#{parent.file_name})") %>
+<%- else -%>
+    assert_redirected_to <%= path_of_with_parent_if_any(nil, "assigns(:#{file_name})") %>
+<%- end -%>
   end
 
   test "should show <%= file_name %>" do
@@ -32,7 +36,11 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
 
   test "should update <%= file_name %>" do
     put :update, :id => <%= table_name %>(:one).to_param, :<%= file_name %> => { }
-    assert_redirected_to <%= file_name %>_path(assigns(:<%= file_name %>))
+<%- if has_parent? -%>
+    assert_redirected_to <%= path_of_with_parent_if_any(nil, "assigns(:#{file_name})", "assigns(:#{parent.file_name})") %>
+<%- else -%>
+    assert_redirected_to <%= path_of_with_parent_if_any(nil, "assigns(:#{file_name})") %>
+<%- end -%>
   end
 
   test "should destroy <%= file_name %>" do
@@ -40,6 +48,6 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
       delete :destroy, :id => <%= table_name %>(:one).to_param
     end
 
-    assert_redirected_to <%= table_name %>_path
+    assert_redirected_to <%= path_of_with_parent_if_any %>
   end
 end

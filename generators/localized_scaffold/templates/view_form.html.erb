@@ -1,4 +1,5 @@
 <% for attribute in attributes -%>
+<%- next if has_parent? and attribute.name == "#{parent.file_name}_id" -%>
 <p>
   <%%= f.label t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %><br />
   <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
