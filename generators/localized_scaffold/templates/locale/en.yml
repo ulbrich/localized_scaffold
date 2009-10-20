@@ -11,6 +11,7 @@ en:
 
   <%= file_name %>:
     cmds:
+      list: "List <%= plural_name %>"
       new: "New <%= singular_name %>"
 
     error:
@@ -26,7 +27,11 @@ en:
       title: "Editing <%= singular_name %>"
 
     index:
+    <%- if has_parent? -%>
+      title: "Listing <%= plural_name %> of <%= parent.singular_name %> {{parent}}"
+    <%- else -%>
       title: "Listing <%= plural_name %>"
+    <%- end -%>
 
     new:
       title: "New <%= singular_name %>"

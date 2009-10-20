@@ -1,4 +1,4 @@
-<h1><%%= t('<%= file_name %>.index.title') %></h1>
+<h1><%%= t('<%= file_name %>.index.title'<%= has_parent? ? ", :parent => @#{parent.file_name}.id" : '' %>) %></h1>
 
 <table class="wide">
   <tr>
@@ -35,6 +35,10 @@
 
   <span class="decent">
     <%%= t('standard.labels.or') %>
+  <%- if has_parent? -%>
+    <%%= link_to t('standard.cmds.back'), <%= parent.singular_name %>_path(@<%= parent.singular_name %>) %>
+  <%- else -%>
     <%%= link_to t('standard.cmds.home'), defined?(home_path) ? home_path : '/' %>
+  <%- end -%>
   </span>
 </p>

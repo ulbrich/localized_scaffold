@@ -11,6 +11,7 @@ de:
 
   <%= file_name %>:
     cmds:
+      list: "<%= plural_name.humanize %> anzeigen"
       new: "<%= class_name %> anlegen"
 
     error:
@@ -26,7 +27,11 @@ de:
       title: "<%= class_name %> bearbeiten"
 
     index:
+    <%- if has_parent? -%>
+      title: "Alle <%= plural_name.humanize %> von <%= parent.singular_name.humanize %> {{parent}}"
+    <%- else -%>
       title: "Alle <%= plural_name.humanize %>"
+    <%- end -%>
 
     new:
       title: "<%= class_name %> anlegen"

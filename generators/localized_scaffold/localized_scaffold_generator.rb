@@ -122,22 +122,36 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
         m.gsub_file "app/models/#{parent.singular_name}.rb", /^(#{Regexp.escape("class #{parent.class_name}")}.*)$/e do |match|
           "#{match}\n  has_many :#{plural_name}\n"
         end
+
+        m.gsub_file "app/views/#{parent.plural_name}/show.html.erb", /^(#{Regexp.escape("<p>\n  <%= link_to t('standard.cmds.back')")}.*)$/e do |match|
+          "<p>\n  <%= link_to t('#{file_name}.cmds.list'), #{path_of_with_parent_if_any}%>\n</p>\n\n#{match}"
+        end
       end
 
-      puts "\nTwo things to know about the optional --parent option of the generator as it
-messes around with your models and routes... ;-)
+      puts "\nThree things to know about the --parent option of the generator as it messes
+around with your models, views and routes:
 
-The following is added to your routes and you might have a second look:
+1) The following is added to your routes and you might have a second look:
 
 map.resources :#{parent.plural_name} do |#{parent.plural_name}|
-  users.resources :#{plural_name}
+  #{parent.plural_name}.resources :#{plural_name}
 end
 
-And we add some relationship to your #{parent.class_name} model:
+2) We also add a one-to-many relationship to your #{parent.class_name} model:
 
 class #{parent.class_name} < ActiveRecord::Base
   has_many :#{plural_name}
 end
+
+3) Finally a link is added between the parent show view and the index view
+of the new #{class_name} model (app/views/#{parent.plural_name}/show.html.erb):
+
+<p>
+  <%= link_to t('#{file_name}.cmds.list'), #{path_of_with_parent_if_any}%>
+</p>
+
+And please be sure to restart your server to asure new localization files are
+loaded.
 
 Here we go...\n\n"
     end
