@@ -95,13 +95,13 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
     m = super # Assembled in yield, so remaining files have to be added manually
 
     m.directory(File.join('lib'))
-    m.directory(File.join('lib', 'locale'))
     m.directory(File.join('app', 'locale'))
 
     lib_dir = File.join(File.dirname(__FILE__), 'lib')
     locale_dir = File.join(File.dirname(__FILE__), 'templates', 'locale')
 
     begin
+      FileUtils.mkdir_p File.join('lib', 'locale')
       FileUtils.cp_r File.join(lib_dir, 'locale'), File.join('lib')
     rescue Exception
       # Already there, so just ignore...
