@@ -32,6 +32,12 @@ lines to the Rails initializer (only the three config lines...):
     config.i18n.default_locale = :de
   end
 
+Add more locale files by downloading them from a repository set up by Sven
+Fuchs at github (git://github.com/svenfuchs/rails-i18n.git) using a rake
+task of the plugin:
+
+  > rake localized_scaffold:download_locales
+
 The plugin will store a standard set of localization files in "lib/locale" and
 generates a set of locale files per scaffold in "app/locale".
 
