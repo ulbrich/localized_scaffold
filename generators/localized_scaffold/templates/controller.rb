@@ -20,7 +20,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <%- if has_parent? -%>
   # Action parameters:
   #
-  # [id] ID of parent <%= file_name %>
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
   #
 <%- end -%>
   # Routes:
@@ -54,7 +54,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # Action parameters:
   #
 <%- if has_parent? -%>
-  # [:<%= parent.file_name %>_id] ID of parent <%= file_name %>
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
 <%- end -%>
   # [:id] ID of the <%= file_name %> to display
   #
@@ -72,6 +72,12 @@ class <%= controller_class_name %>Controller < ApplicationController
 
   # Action displaying a form for creating a new <%= file_name %>.
   #
+<%- if has_parent? -%>
+  # Action parameters:
+  #
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
+  #
+<%- end -%>
   # Routes:
   #
   # GET <%= parent_route_prefix_if_any %>/<%= table_name %>/new
@@ -95,7 +101,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # Action parameters:
   #
 <%- if has_parent? -%>
-  # [:<%= parent.file_name %>_id] ID of parent <%= file_name %>
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
 <%- end -%>
   # [:id] ID of the <%= file_name %> to edit
   #
@@ -111,7 +117,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # Action parameters:
   #
 <%- if has_parent? -%>
-  # [:<%= parent.file_name %>_id] ID of parent <%= file_name %>
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
 <%- end -%>
   # [:<%= file_name %>[]] Form data
   #
@@ -150,7 +156,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # Action parameters:
   #
 <%- if has_parent? -%>
-  # [:<%= parent.file_name %>_id] ID of parent <%= file_name %>
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
 <%- end -%>
   # [:id] ID of the <%= file_name %> to update
   # [:<%= file_name %>[]] Form data
@@ -183,7 +189,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # Action parameters:
   #
 <%- if has_parent? -%>
-  # [:<%= parent.file_name %>_id] ID of parent <%= file_name %>
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
 <%- end -%>
   # [:id] ID of the <%= file_name %> to delete
   #
