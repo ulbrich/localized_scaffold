@@ -69,8 +69,8 @@ Here is a sample for exactly that:
   script/generate localized_scaffold email --parent company company_id:integer \
     what:string number:string
 
-There is no linking between the interfaces, yet and you should double check
-your routes, but after creating a new company at "/companies/new" you will 
+There is only little linking between the interfaces and you should double check
+your routes, but after creating a new company at "/companies/new", you will 
 be able to see all its addresses and add new ones at "/companies/1/addresses".
 Same for e-mail-addresses at "/companies/1/emails". There is enough to do till
 you have a nice app and this is still scaffolding and nothing more, but it
