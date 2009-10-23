@@ -64,8 +64,10 @@ views for something like companies having many addresses or phone numbers.
 Here is a sample for exactly that:
 
   script/generate localized_scaffold company name:string about:text
+
   script/generate localized_scaffold address --parent company company_id:integer \
     what:string street:string zip:string town:string state:string country:string 
+
   script/generate localized_scaffold email --parent company company_id:integer \
     what:string number:string
 
