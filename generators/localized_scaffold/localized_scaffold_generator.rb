@@ -23,11 +23,15 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
   def initialize(runtime_args, runtime_options = {})
     super
 
+    if ['url'].include? file_name # More to come...
+      raise ArgumentError, "!!A model named #{file_name} will bring trouble."
+    end
+
     if (parent_name = options[:parent])
       parent_attribute = "#{parent_name}_id"
 
       if runtime_args.join(',').index(parent_attribute).nil?
-        raise ArgumentError, "Missing something like #{parent_attribute}:integer as attribute!"
+        raise ArgumentError, "!!Missing something like #{parent_attribute}:integer as attribute."
       end
 
       ScaffoldGenerator.spec = self.spec
