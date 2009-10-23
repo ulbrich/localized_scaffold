@@ -15,7 +15,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
   before_filter :setup_<%= file_name %>, :except => [ :index, :new, :create ]
 
-  # Action listing all <%= table_name %><% if has_parent? -%> of a certain <%= parent.file_name %>.<% end %>.
+  # Action listing all <%= table_name %><% if has_parent? -%> of a certain <%= parent.file_name %><% end %>.
   #
 <%- if has_parent? -%>
   # Action parameters:
@@ -211,8 +211,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
   protected
 
-    # Before filter setting up @<%= file_name %> looking up a <%= file_name %> needed
-    # by most actions.
+    # Before filter setting up @<%= file_name %> needed by most actions.
 
     def setup_<%= file_name %>
     <%- if has_parent? -%>
