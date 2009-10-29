@@ -14,7 +14,7 @@ de:
       list: "<%= plural_name.humanize %> anzeigen"
       new: "<%= class_name %> anlegen"
 
-    error:
+    errors:
       not_found: "<%= class_name %> nicht gefunden."
 
     create:

@@ -144,7 +144,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.xml  { render :xml => @<%= file_name %>, :status => :created,
                         :location => @<%= file_name %> }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => 'new' }
         format.xml  { render :xml => @<%= file_name %>.errors,
                         :status => :unprocessable_entity }
       end
@@ -177,7 +177,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.html { redirect_to(<%= path_of_with_parent_if_any(:show) %>) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => 'edit' }
         format.xml  { render :xml => @<%= file_name %>.errors,
                         :status => :unprocessable_entity }
       end
@@ -221,7 +221,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     <%- end -%>
 
       if @<%= file_name %>.nil?
-        flash[:error] = t('<%= file_name %>.error.not_found')
+        flash[:error] = t('<%= file_name %>.errors.not_found')
 
         respond_to do |format|
           format.html { redirect_to(defined?(home_path) ? home_path : '/') }
@@ -242,7 +242,7 @@ class <%= controller_class_name %>Controller < ApplicationController
       @<%= parent.file_name %> = <%= parent.class_name %>.find(params[:<%= parent.file_name %>_id])
 
       if @<%= parent.file_name %>.nil?
-        flash[:error] = _('<%= parent.file_name %>::error.not_found')
+        flash[:error] = _('<%= parent.file_name %>.errors.not_found')
 
         respond_to do |format|
           format.html { redirect_to(defined?(home_path) ? home_path : '/') }

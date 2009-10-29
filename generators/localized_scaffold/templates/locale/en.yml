@@ -14,7 +14,7 @@ en:
       list: "List <%= plural_name %>"
       new: "New <%= singular_name %>"
 
-    error:
+    errors:
       not_found: "<%= class_name %> not found."
 
     create:

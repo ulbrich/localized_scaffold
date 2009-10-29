@@ -2,21 +2,21 @@
 
 <table class="wide">
   <tr>
-  <% for attribute in attributes -%>
+  <%- for attribute in attributes -%>
     <%- next if has_parent? and attribute.name == "#{parent.file_name}_id" -%>
     <th><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %></th>
-  <% end -%>
+  <%- end -%>
     <th>&nbsp;</th>
   </tr>
 
   <%% @<%= plural_name %>.each do |<%= singular_name %>| %>
     <tr>
-    <% for attribute in attributes -%>
+    <%- for attribute in attributes -%>
       <%- next if has_parent? and attribute.name == "#{parent.file_name}_id" -%>
       <td><%%=h <%= singular_name %>.<%= attribute.name %> %></td>
-    <% end -%>
+    <%- end -%>
 
-      <td class="last">
+      <td class="last cmds">
         <%%= link_to t('standard.cmds.show'), <%= path_of_with_parent_if_any(:show, "#{singular_name}") %> %> |
         <%%= link_to t('standard.cmds.edit'), <%= path_of_with_parent_if_any(:edit, "#{singular_name}") %> %> |
         <%%= link_to t('standard.cmds.destroy'), <%= path_of_with_parent_if_any(:show, "#{singular_name}") %>,
