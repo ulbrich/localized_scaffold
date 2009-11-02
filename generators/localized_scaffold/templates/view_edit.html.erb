@@ -1,4 +1,4 @@
-<h1><%%= t('<%= file_name %>.edit.title') %></h1>
+<%= view_header("t('#{file_name}.edit.title')") %>
 
 <%% form_for(@<%= singular_name %>, :url => <%= path_of_with_parent_if_any(:show) %>,
   :html => { :multipart => true }) do |f| %>
@@ -11,8 +11,7 @@
 
       <span class="decent">
         <%%= t('standard.labels.or') %>
-        <%%= link_to t('standard.cmds.show'), <%= path_of_with_parent_if_any(:show) %> %> |
-        <%%= link_to t('standard.cmds.back'), <%= path_of_with_parent_if_any %> %>
+        <%%= link_to t('standard.cmds.cancel'), <%= path_of_with_parent_if_any(:show) %> %>
       </span>
     </p>
 <%% end %>

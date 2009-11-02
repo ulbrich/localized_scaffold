@@ -180,6 +180,17 @@ Here we go...\n\n"
     return @@has_will_paginate
   end
 
+  # Returns the HTML to insert in the views header section. Done in a separate
+  # method to ease customization.
+  #
+  # Parameters:
+  #
+  # [text] Text to display as header
+
+  def view_header(text)
+    return "<h1><%= #{text} %></h1>"
+  end
+
   protected
 
     # Override with our own usage banner.

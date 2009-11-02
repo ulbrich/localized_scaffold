@@ -1,4 +1,8 @@
-<h1><%%= t('<%= file_name %>.index.title'<%= has_parent? ? ", :parent => @#{parent.file_name}.id" : '' %>) %></h1>
+<%- if has_parent? -%>
+<%= view_header("t('#{file_name}.index.title', :parent => @#{parent.file_name}.id)") %>
+<%- else -%>
+<%= view_header("t('#{file_name}.index.title')") %>
+<%- end -%>
 
 <table class="wide">
   <tr>

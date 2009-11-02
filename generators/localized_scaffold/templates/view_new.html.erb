@@ -1,4 +1,4 @@
-<h1><%%= t('<%= file_name %>.new.title') %></h1>
+<%= view_header("t('#{file_name}.new.title')") %>
 
 <%% form_for(@<%= singular_name %>, :url => <%= path_of_with_parent_if_any(nil, "@#{singular_name}") %>,
   :html => { :multipart => true }) do |f| %>
