@@ -61,7 +61,7 @@ en:
       save: Save
       save_and_continue: Save and continue editing
       search: Search
-      select: Auswählen
+      select: Select
       send: Send
       settings: Settings
       show: Show
@@ -76,6 +76,7 @@ en:
       login_required: You have to authenticate for this action.
       no_data: No matching data found...
       no_javascript: Javascript needed
+      access_denied: "You are not allowed to open the page you requested!"
 
     in_place_edit:
       cancel: Cancel

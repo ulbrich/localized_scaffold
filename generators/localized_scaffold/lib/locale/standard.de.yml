@@ -75,6 +75,7 @@ de:
       login_required: Für diese Aktion musst Du Dich autorisieren.
       no_data: Keine passenden Daten gefunden...
       no_javascript: Javascript benötigt
+      access_denied: "Auf die angeforderte Seite hast Du keinen Zugriff!"
 
     in_place_edit:
       cancel: Abbrechen
