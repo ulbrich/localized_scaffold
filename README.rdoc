@@ -63,9 +63,9 @@ search form.
 
 === Belongs to something...
 
-There is a new option --belongs_to which can be used to generate model,
-controller and views for something like companies having many addresses or
-phone numbers.
+There is a new option <code>--belongs_to</code> which can be used to generate
+model, controller and views for something like companies having many addresses
+or phone numbers.
 
 Here is a sample for exactly that:
 
@@ -87,8 +87,8 @@ Same for e-mail-addresses at "/companies/1/emails".
 When there are lots of records, it makes sense to have an ABC strip of the
 chars a certain field of the records start with. And it would be nice to offer
 a simple search form for fast access to known objects. That's exactly what
-new option --searchbar does. It supports the --belongs_to option but is also 
-useful without.
+new option <code>--searchbar</code> does. It supports the
+<code>--belongs_to</code> option but is also  useful without.
 
 There is enough to do till you have a nice app and this is still scaffolding
 and nothing more, but it saves some more annoying work...
