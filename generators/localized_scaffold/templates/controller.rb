@@ -23,7 +23,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
   # Action listing all <%= table_name %><% if has_parent? -%> of a certain <%= parent.file_name %><% end %>.
   #
-<%- if has_parent? or has_searchbar? -%>
+<%- if has_parent? or has_searchbar? or has_will_paginate? -%>
   # Action parameters:
   #
 <%- end -%>
@@ -32,6 +32,9 @@ class <%= controller_class_name %>Controller < ApplicationController
 <%- end -%>
 <%- if has_searchbar? -%>
   # [:q] Chars a matching <%= file_name %> has to start with
+<%- end -%>
+<%- if has_will_paginate? -%>
+  # [:page] Page to display (defaults to 1)
 <%- end -%>
   #
   # Routes:
