@@ -2,13 +2,13 @@
 
 == About
 
-Rails plugin "localized_scaffold" provides a generator for scaffolding with
-the same parameters as the orginal "scaffold" generator but producing
-localized views and localized controller flashes plus some little nicer user
+Rails plugin "localized_scaffold" provides a generator for scaffolding
+with the same parameters as the orginal "scaffold" generator but producing
+localized views and localized controller flashes plus some nicer user
 interface.
 
 Just give it a try and toss it away if you don't like it -- it's pretty easy
-to have a test drive.
+to have a test drive...
 
 == Installation and usage
 
