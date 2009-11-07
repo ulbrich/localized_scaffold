@@ -202,7 +202,7 @@ EOF
         end
 
         m.gsub_file "app/models/#{singular_name}.rb", /^(#{Regexp.escape("class #{class_name}")}.*)$/e do |match|
-          "#{match}\n  belongs_to :#{singular_name}"
+          "#{match}\n  belongs_to :#{parent.file_name}"
         end
 
         m.gsub_file "app/views/#{parent.plural_name}/show.html.erb", /^(#{Regexp.escape("<p>\n  <%= link_to t('standard.cmds.back')")}.*)$/e do |match|
