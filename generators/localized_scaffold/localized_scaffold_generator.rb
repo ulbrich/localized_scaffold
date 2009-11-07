@@ -9,7 +9,7 @@ require File.join(File.dirname(File.dirname(Gem.bin_path('rails'))),
 # to change the current directory to push underneath our own templates.
 
 class LocalizedScaffoldGenerator < ScaffoldGenerator
-  attr_reader :parent
+  attr_reader :parent, :searchbar
 
   # Constructor setting up parent fake generator if --parent option found.
   # This fake is used to forward calls like file_name in scope of the parent
@@ -27,7 +27,9 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
       raise ArgumentError, "!!A model named #{file_name} will bring trouble."
     end
 
-    if (parent_name = options[:parent])
+    @searchbar = options[:searchbar]
+
+    if (parent_name = options[:belongsto])
       parent_attribute = "#{parent_name}_id"
 
       if runtime_args.join(',').index(parent_attribute).nil?
@@ -39,11 +41,17 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
     end
   end
 
-  # Returns true if the generator should be generate stuff in scope of a
+  # Returns true if the generator should generate stuff in scope of a
   # parent controller.
 
   def has_parent?
     return (@parent != nil)
+  end
+
+  # Returns true if the generator should generate stuff including a searchbar.
+
+  def has_searchbar?
+    return (@searchbar != nil)
   end
 
   # Returns something to prefix controller routes with if rendering for a
@@ -62,33 +70,49 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
   #
   # Parameters:
   #
-  # [method] Optional method (e.g. :edit, :new)
+  # Options:
+  #
+  # [:method] Optional method (e.g. :edit, :new)
+  # [:value1] First value to add to path
+  # [:value2] Second value to add to path
+  # [:extraargs] Additional stuff to add (e.g. ":q = c" for query)
 
-  def path_of_with_parent_if_any(method = nil, value1 = nil, value2 = nil)
-    value1 = "@#{singular_name}" if value1.blank?
+  def path_of_with_parent_if_any(options = {})
+    method = options[:method] || nil
+
+    value1 = options[:value1] || "@#{singular_name}"
+    value2 = options[:value2]
+    
     value2 = "@#{parent.singular_name}" if has_parent? and value2.blank?
+
+    extraargs = options[:extraargs]
+
+    if not extraargs.blank?
+      extraargs1 = ', ' + extraargs
+      extraargs2 = '(' + extraargs + ')'
+    end
 
     if has_parent?
       case method
       when nil
-        return "#{parent.singular_name}_#{plural_name}_path(#{value2})"
+        return "#{parent.singular_name}_#{plural_name}_path(#{value2}#{extraargs1})"
       when :show
-        return "#{parent.singular_name}_#{singular_name}_path(#{value2}, #{value1})"
+        return "#{parent.singular_name}_#{singular_name}_path(#{value2}, #{value1}#{extraargs1})"
       when :new
-        return "new_#{parent.singular_name}_#{singular_name}_path(#{value2})"
+        return "new_#{parent.singular_name}_#{singular_name}_path(#{value2}#{extraargs1})"
       else
-        return "#{method}_#{parent.singular_name}_#{singular_name}_path(#{value2}, #{value1})"
+        return "#{method}_#{parent.singular_name}_#{singular_name}_path(#{value2}, #{value1}#{extraargs1})"
       end
     else
       case method
       when nil
-        return "#{plural_name}_path"
+        return "#{plural_name}_path#{extraargs2}"
       when :show
-        return "#{singular_name}_path(#{value1})"
+        return "#{singular_name}_path(#{value1}#{extraargs1})"
       when :new
-        return "new_#{singular_name}_path"
+        return "new_#{singular_name}_path#{extraargs2}"
       else
-        return "#{method}_#{singular_name}_path(#{value1})"
+        return "#{method}_#{singular_name}_path(#{value1}#{extraargs1})"
       end
     end
   end
@@ -118,6 +142,55 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
     m.template('view_form.html.erb', File.join('app/views', controller_class_path,
       controller_file_name, '_form.html.erb'))
 
+    if has_searchbar?
+      if has_parent?
+        patch = <<EOF
+
+  validates_presence_of :#{searchbar}
+
+  # Returns an array with the first chars of the #{searchbar} field and the
+  # number of occurences in scope of the provided #{parent.file_name}.
+  #
+  # Parameters:
+  #
+  # [#{parent.file_name}_id] ID of the object to search in
+
+  def self.#{searchbar}_chars(#{parent.file_name}_id)
+    return #{class_name}.find(:all,
+             :select => 'lower(substr(#{searchbar}, 1, 1)) as #{searchbar}_chars,
+               count(*) as count',
+             :conditions => ['#{parent.file_name}_id == ?', #{parent.file_name}_id],
+             :order => 'lower(substr(#{searchbar}_chars, 1, 1)) asc',
+             :group => 'lower(substr(#{searchbar}_chars, 1, 1))').collect { |s|
+               [s.#{searchbar}_chars, s.count]
+             }
+  end
+EOF
+      else
+        patch = <<EOF
+
+  validates_presence_of :#{searchbar}
+
+  # Returns an array with the first chars of the #{searchbar} field and the
+  # number of occurences.
+
+  def self.#{searchbar}_chars
+    return #{class_name}.find(:all,
+             :select => 'lower(substr(#{searchbar}, 1, 1)) as #{searchbar}_chars,
+               count(*) as count',
+             :order => 'lower(substr(#{searchbar}_chars, 1, 1)) asc',
+             :group => 'lower(substr(#{searchbar}_chars, 1, 1))').collect { |s|
+               [s.#{searchbar}_chars, s.count]
+             }
+  end
+EOF
+      end
+
+      m.gsub_file "app/models/#{singular_name}.rb", /^(#{Regexp.escape("class #{class_name}")}.*)$/e do |match|
+        "#{match}\n#{patch.chomp}"
+      end
+    end
+
     if has_parent?
       unless options[:pretend]
         m.gsub_file 'config/routes.rb', /(#{Regexp.escape("map.resources :#{plural_name}")})/mi do |match|
@@ -125,7 +198,11 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
         end
 
         m.gsub_file "app/models/#{parent.singular_name}.rb", /^(#{Regexp.escape("class #{parent.class_name}")}.*)$/e do |match|
-          "#{match}\n  has_many :#{plural_name}\n"
+          "#{match}\n  has_many :#{plural_name}"
+        end
+
+        m.gsub_file "app/models/#{singular_name}.rb", /^(#{Regexp.escape("class #{class_name}")}.*)$/e do |match|
+          "#{match}\n  belongs_to :#{singular_name}"
         end
 
         m.gsub_file "app/views/#{parent.plural_name}/show.html.erb", /^(#{Regexp.escape("<p>\n  <%= link_to t('standard.cmds.back')")}.*)$/e do |match|
@@ -180,6 +257,20 @@ Here we go...\n\n"
     return @@has_will_paginate
   end
 
+  # Returns true if JQuery Javascript library is there.
+
+  def has_javascript_jquery?
+    return File.exists?(File.join(RAILS_ROOT, 'public', 'javascripts',
+             'jquery.js'))
+  end
+
+  # Returns true if Prototype Javascript library is there.
+
+  def has_javascript_prototype?
+    return File.exists?(File.join(RAILS_ROOT, 'public', 'javascripts',
+             'prototype.js'))
+  end
+
   # Returns the HTML to insert in the views header section. Done in a separate
   # method to ease customization.
   #
@@ -210,8 +301,11 @@ Here we go...\n\n"
 
       opt.separator ''
 
-      opt.on("-P", "--parent=name", String,
-        'Parent to add nested routing for',
-        'Default: None') { |v| options[:parent] = v }
+      opt.on("-B", "--belongsto=name", String,
+        'Parent model this model belongs',
+        'Default: None') { |v| options[:belongsto] = v }
+      opt.on("-S", "--searchbar=name", String,
+        'Column to base ABC and search bar on',
+        'Default: None') { |v| options[:searchbar] = v }
     end
 end

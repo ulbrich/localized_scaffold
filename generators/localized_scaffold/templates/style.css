@@ -67,6 +67,21 @@ div.pagination {
   display: inline;
 }
 
+table.searchbar, table.searchbar td, table.searchbar tr {
+  border: none;
+}
+
+table.searchbar td {
+  padding: 0px 5px 10px 0px;
+  vertical-align: baseline;
+}
+table.searchbar td a {
+  font-weight: bold;
+}
+table.searchbar td.selected strong {
+  font-size: 130%;
+}
+
 .decent, .decent a {
   color: #808080;
 }

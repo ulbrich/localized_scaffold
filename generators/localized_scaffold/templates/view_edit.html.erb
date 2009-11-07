@@ -1,6 +1,6 @@
 <%= view_header("t('#{file_name}.edit.title')") %>
 
-<%% form_for(@<%= singular_name %>, :url => <%= path_of_with_parent_if_any(:show) %>,
+<%% form_for(@<%= singular_name %>, :url => <%= path_of_with_parent_if_any(:method => :show) %>,
   :html => { :multipart => true }) do |f| %>
     <%%= f.error_messages %>
 
@@ -11,7 +11,7 @@
 
       <span class="decent">
         <%%= t('standard.labels.or') %>
-        <%%= link_to t('standard.cmds.cancel'), <%= path_of_with_parent_if_any(:show) %> %>
+        <%%= link_to t('standard.cmds.cancel'), <%= path_of_with_parent_if_any(:method => :show) %> %>
       </span>
     </p>
 <%% end %>

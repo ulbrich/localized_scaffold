@@ -7,10 +7,10 @@
 <%- end -%>
 
 <p>
-  <%%= link_to t('standard.cmds.back'), <%= path_of_with_parent_if_any %> %>
+  <%%= link_to t('standard.cmds.back'), <%= path_of_with_parent_if_any(:extraargs => (has_searchbar? ? ":q => @#{file_name}.#{searchbar}.first" : nil)) %> %>
 
   <span class="decent">
     <%%= t('standard.labels.or') %>
-    <%%= link_to t('standard.cmds.edit'), <%= path_of_with_parent_if_any(:edit) %> %>
+    <%%= link_to t('standard.cmds.edit'), <%= path_of_with_parent_if_any(:method => :edit) %> %>
   </span>
 </p>

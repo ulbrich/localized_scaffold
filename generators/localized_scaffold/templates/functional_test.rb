@@ -38,9 +38,9 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
     end
 
 <%- if has_parent? -%>
-    assert_redirected_to <%= path_of_with_parent_if_any(:show, "assigns(:#{file_name})", "assigns(:#{parent.file_name})") %>
+    assert_redirected_to <%= path_of_with_parent_if_any(:method => :show, :value1 => "assigns(:#{file_name})", :value2 => "assigns(:#{parent.file_name})") %>
 <%- else -%>
-    assert_redirected_to <%= path_of_with_parent_if_any(:show, "assigns(:#{file_name})") %>
+    assert_redirected_to <%= path_of_with_parent_if_any(:method => :show, :value1 => "assigns(:#{file_name})") %>
 <%- end -%>
   end
 
@@ -69,9 +69,9 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
     put :update, :id => <%= table_name %>(:one).to_param, :<%= file_name %> => { }
 <%- end -%>
 <%- if has_parent? -%>
-    assert_redirected_to <%= path_of_with_parent_if_any(:show, "assigns(:#{file_name})", "assigns(:#{parent.file_name})") %>
+    assert_redirected_to <%= path_of_with_parent_if_any(:method => :show, :value1 => "assigns(:#{file_name})", :value2 => "assigns(:#{parent.file_name})") %>
 <%- else -%>
-    assert_redirected_to <%= path_of_with_parent_if_any(:show, "assigns(:#{file_name})") %>
+    assert_redirected_to <%= path_of_with_parent_if_any(:method => :show, :value1 => "assigns(:#{file_name})") %>
 <%- end -%>
   end
 
@@ -85,7 +85,7 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
     end
 
 <%- if has_parent? -%>
-    assert_redirected_to <%= path_of_with_parent_if_any(nil, "assigns(:#{file_name})", "assigns(:#{parent.file_name})") %>
+    assert_redirected_to <%= path_of_with_parent_if_any(:value1 => "assigns(:#{file_name})", :value2 => "assigns(:#{parent.file_name})") %>
 <%- else -%>
     assert_redirected_to <%= path_of_with_parent_if_any %>
 <%- end -%>

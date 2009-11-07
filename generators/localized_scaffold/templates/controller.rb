@@ -15,31 +15,61 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
   before_filter :setup_<%= file_name %>, :except => [ :index, :new, :create ]
 
+<%- if has_searchbar? -%>
+  # Helper classes wrapping search term and matching chars.
+
+  Searchbar = Struct.new(:chars, :term)
+
+<% end -%>
   # Action listing all <%= table_name %><% if has_parent? -%> of a certain <%= parent.file_name %><% end %>.
   #
-<%- if has_parent? -%>
+<%- if has_parent? or has_searchbar? -%>
   # Action parameters:
   #
-  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
-  #
 <%- end -%>
+<%- if has_parent? -%>
+  # [:<%= parent.file_name %>_id] ID of parent <%= parent.file_name %>
+<%- end -%>
+<%- if has_searchbar? -%>
+  # [:q] Chars a matching <%= file_name %> has to start with
+<%- end -%>
+  #
   # Routes:
   #
   # GET <%= parent_route_prefix_if_any %>/<%= table_name %>
   # GET <%= parent_route_prefix_if_any %>/<%= table_name %>.xml
 
   def index
+<%- if has_searchbar? -%>
+<%- if has_parent? -%>
+    chars = <%= class_name %>.<%= searchbar %>_chars(@<%= parent.file_name %>.id).collect { |i| i[0] }
+<%- else -%>
+    chars = <%= class_name %>.<%= searchbar %>_chars.collect { |i| i[0] }
+<%- end -%>
+
+    term = params[:q]
+    term = chars.first if term.blank? or term == t('standard.cmds.search')
+    term = 'a' if term.blank?
+
+    @searchbar = Searchbar.new(chars, term)
+
+    <%- extraargs = ":order => '#{table_name}.#{searchbar} asc',
+               :conditions => ['lower(#{table_name}.#{searchbar}) like ?',
+               term.downcase + '%']" -%>
+<%- else -%>
+    <%- extraargs = '' -%>
+<%- end -%>
 <%- if has_parent? -%>
   <%- if has_will_paginate? -%>
-    @<%= table_name %> = @<%= parent.file_name %>.<%= table_name %>.paginate(:all, :page => current_page)
+    @<%= table_name %> = @<%= parent.file_name %>.<%= table_name %>.paginate(:all, :page => current_page<%= extraargs.blank? ? '' : ", #{extraargs}" %>)
   <%- else -%>
-    @<%= table_name %> = @<%= parent.file_name %>.<%= table_name %>.all
+    @<%= table_name %> = @<%= parent.file_name %>.<%= table_name %>.all<%= extraargs.blank? ? '' : "(#{extraargs})" %>
   <%- end -%>
 <%- else -%>
   <%- if has_will_paginate? -%>
-    @<%= table_name %> = <%= class_name %>.paginate(:all, :page => current_page)
+    @<%= table_name %> = <%= class_name %>.paginate(:all, :page => current_page<%= extraargs.blank? ? '' : ", #{extraargs}" %>)
   <%- else -%>
-    @<%= table_name %> = <%= class_name %>.all
+    @<%= table_name %> = <%= class_name %>.all<%= extraargs.blank? ? '' : "(#{extraargs})" %>
   <%- end -%>
 <%- end -%>
 
@@ -140,7 +170,7 @@ class <%= controller_class_name %>Controller < ApplicationController
       if @<%= file_name %>.save
         flash[:notice] = t('<%= file_name %>.create.flash')
 
-        format.html { redirect_to(<%= path_of_with_parent_if_any(:show) %>) }
+        format.html { redirect_to(<%= path_of_with_parent_if_any(:method => :show) %>) }
         format.xml  { render :xml => @<%= file_name %>, :status => :created,
                         :location => @<%= file_name %> }
       else
@@ -174,7 +204,7 @@ class <%= controller_class_name %>Controller < ApplicationController
       if @<%= file_name %>.update_attributes(data)
         flash[:notice] = t('<%= file_name %>.update.flash')
 
-        format.html { redirect_to(<%= path_of_with_parent_if_any(:show) %>) }
+        format.html { redirect_to(<%= path_of_with_parent_if_any(:method => :show) %>) }
         format.xml  { head :ok }
       else
         format.html { render :action => 'edit' }
@@ -204,7 +234,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     respond_to do |format|
       flash[:notice] = t('<%= file_name %>.destroy.flash')
 
-      format.html { redirect_to(<%= path_of_with_parent_if_any %>) }
+      format.html { redirect_to(<%= path_of_with_parent_if_any(:extraargs => (has_searchbar? ? ":q => @#{file_name}.#{searchbar}.first" : nil)) %>) }
       format.xml  { head :ok }
     end
   end
