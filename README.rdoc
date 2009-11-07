@@ -61,7 +61,7 @@ I couldn't resist to add two small but powerful additions I need so often: An
 optional belongs_to relation and a searchbar with an ABC strip and a small
 search form.
 
-=== Belongs to something...
+=== Belongs to something
 
 There is a new option <code>--belongs_to</code> which can be used to generate
 model, controller and views for something like companies having many addresses
