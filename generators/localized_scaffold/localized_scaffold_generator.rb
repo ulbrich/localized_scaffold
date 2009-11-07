@@ -11,7 +11,7 @@ require File.join(File.dirname(File.dirname(Gem.bin_path('rails'))),
 class LocalizedScaffoldGenerator < ScaffoldGenerator
   attr_reader :parent, :searchbar
 
-  # Constructor setting up parent fake generator if --parent option found.
+  # Constructor setting up parent fake generator if --belongs_to option found.
   # This fake is used to forward calls like file_name in scope of the parent
   # object.
   #  
@@ -210,7 +210,7 @@ EOF
         end
       end
 
-      puts "\nThree things to know about the --parent option of the generator as it messes
+      puts "\nThree things to know about the --belongs_to option of the generator as it messes
 around with your models, views and routes:
 
 1) The following is added to your routes and you might have a second look:
@@ -301,7 +301,7 @@ Here we go...\n\n"
 
       opt.separator ''
 
-      opt.on("-B", "--belongsto=name", String,
+      opt.on("-B", "--belongs_to=name", String,
         'Parent model this model belongs',
         'Default: None') { |v| options[:belongsto] = v }
       opt.on("-S", "--searchbar=name", String,

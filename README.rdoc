@@ -57,26 +57,41 @@ and standard strings. :-)
 
 == One last thing...
 
-I couldn't resist to add a small but powerful addition I need so often: There
-is a new option --parent which can be used to generate model, controller and
-views for something like companies having many addresses or phone numbers.
+I couldn't resist to add two small but powerful additions I need so often: An
+optional belongs_to relation and a searchbar with an ABC strip and a small
+search form.
+
+=== Belongs to something...
+
+There is a new option --belongs_to which can be used to generate model,
+controller and views for something like companies having many addresses or
+phone numbers.
 
 Here is a sample for exactly that:
 
   script/generate localized_scaffold company name:string about:text
 
-  script/generate localized_scaffold address --parent company company_id:integer \
+  script/generate localized_scaffold address --belongs_to company company_id:integer \
     what:string street:string zip:string town:string state:string country:string 
 
-  script/generate localized_scaffold email --parent company company_id:integer \
+  script/generate localized_scaffold email --belongs_to company company_id:integer \
     what:string number:string
 
 There is only little linking between the interfaces and you should double check
 your routes, but after creating a new company at "/companies/new", you will 
 be able to see all its addresses and add new ones at "/companies/1/addresses".
-Same for e-mail-addresses at "/companies/1/emails". There is enough to do till
-you have a nice app and this is still scaffolding and nothing more, but it
-saves some more annoying work...
+Same for e-mail-addresses at "/companies/1/emails".
+
+=== Searchbar
+
+When there are lots of records, it makes sense to have an ABC strip of the
+chars a certain field of the records start with. And it would be nice to offer
+a simple search form for fast access to known objects. That's exactly what
+new option --searchbar does. It supports the --belongs_to option but is also 
+useful without.
+
+There is enough to do till you have a nice app and this is still scaffolding
+and nothing more, but it saves some more annoying work...
 
 == Copyright & License
 
