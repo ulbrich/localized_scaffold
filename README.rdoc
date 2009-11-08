@@ -79,11 +79,12 @@ Here is a sample for exactly that:
 
   script/generate localized_scaffold company name:string about:text
 
-  script/generate localized_scaffold address --belongs_to company company_id:integer \
-    what:string street:string zip:string town:string state:string country:string 
+  script/generate localized_scaffold address --belongs_to company \
+    company_id:integer kind:string street:string zip:string town:string \
+    state:string country:string 
 
-  script/generate localized_scaffold email --belongs_to company company_id:integer \
-    what:string number:string
+  script/generate localized_scaffold email --belongs_to company \
+    company_id:integer kind:string number:string
 
 There is only little linking between the interfaces and you should double check
 your routes, but after creating a new company at "/companies/new", you will 
@@ -108,8 +109,8 @@ and nothing more, but it saves some more annoying work...
 
 == Demo
 
-As a wrap up, here is a complete sample of a simple phone book only using
-scaffolding:
+As a wrap up, here is the complete sample from above with a small company
+management site using only scaffolding:
 
   rails phonebook
   cd phonebook
@@ -122,21 +123,27 @@ scaffolding:
   rake localized_scaffold:configure
   rake localized_scaffold:download_locales
 
-  script/generate localized_scaffold person lastname:string firstname:string \
-    --searchbar lastname
-  script/generate localized_scaffold phone person_id:integer kind:string \
-    number:string --belongs_to person
+  script/generate localized_scaffold company name:string about:text \
+    --searchbar name
+
+  script/generate localized_scaffold address --belongs_to company \
+    company_id:integer kind:string street:string zip:string town:string \
+    state:string country:string 
+
+  script/generate localized_scaffold email --belongs_to company \
+    company_id:integer kind:string number:string
 
   rake db:migrate
 
   script/server
 
-Now open http://localhost:3000/people to test the application and finally have
-a look at the localization files generated in "app/locale". Continue with your
-own modifications: For example the show view doesn't make sense for small
-objects like the phone number, so remove the view and modify linking. And it
-might be nicer to display the name of the person instead of an ID on the index
-view of the phone numbers. 
+Now open http://localhost:3000/companies to test the application and finally
+have a look at the localization files generated in "app/locale".
+
+Continue with your own modifications: For example the show view doesn't make
+sense for small objects like the e-mail address, so remove the view and modify
+linking. And it might be nicer to display the name of the company instead of
+an ID on the index view of the addresses and e-mail addresses... 
 
 == Copyright & License
 
