@@ -18,27 +18,31 @@ Here are the steps to get a first impression about the plugin:
   > cd foo
   > script/plugin install git://github.com/ulbrich/localized_scaffold.git
 
-Optionally install the "will paginate" gem to automatically add pagination
+Optionally install the "will_paginate" gem to automatically add pagination
 using this library for every generated scaffold.
 
   > sudo gem install mislav-will_paginate
 
-Edit the environment file ("config/environment.rb") and add the following
-lines to the Rails initializer (only the three config lines...):
+The plugin will store a standard set of localization files in "lib/locale" and
+generates a set of locale files per scaffold in "app/locale". Add these two
+directories to the i18n configuration:
+
+  > rake localized_scaffold:configure
+
+If you don't like a rake task to mess around with your environment file, edit
+"config/environment.rb") manually and add the following lines to the Rails
+initializer (only the three config lines...):
 
   Rails::Initializer.run do |config|
     config.i18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')]
     config.i18n.load_path += Dir[Rails.root.join('app', 'locale', '*.{rb,yml}')]
-    config.i18n.default_locale = :de
+    config.i18n.default_locale = :en
   end
 
 Add more locale files by downloading them from a repository set up by Sven
 Fuchs at github (git://github.com/svenfuchs/rails-i18n.git) to "lib/locale":
 
   > rake localized_scaffold:download_locales
-
-The plugin will store a standard set of localization files in "lib/locale" and
-generates a set of locale files per scaffold in "app/locale".
 
 Have a look at the options supported by the generator:
 
