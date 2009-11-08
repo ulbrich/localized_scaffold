@@ -14,20 +14,20 @@ to have a test drive...
 
 Here are the steps to get a first impression about the plugin:
 
-  > rails foo
-  > cd foo
-  > script/plugin install git://github.com/ulbrich/localized_scaffold.git
+  rails foo
+  cd foo
+  script/plugin install git://github.com/ulbrich/localized_scaffold.git
 
 Optionally install the "will_paginate" gem to automatically add pagination
 using this library for every generated scaffold.
 
-  > sudo gem install mislav-will_paginate
+  sudo gem install will_paginate
 
 The plugin will store a standard set of localization files in "lib/locale" and
 generates a set of locale files per scaffold in "app/locale". Add these two
 directories to the i18n configuration:
 
-  > rake localized_scaffold:configure
+  rake localized_scaffold:configure
 
 If you don't like a rake task to mess around with your environment file, edit
 "config/environment.rb") manually and add the following lines to the Rails
@@ -42,18 +42,18 @@ initializer (only the three config lines...):
 Add more locale files by downloading them from a repository set up by Sven
 Fuchs at github (git://github.com/svenfuchs/rails-i18n.git) to "lib/locale":
 
-  > rake localized_scaffold:download_locales
+  rake localized_scaffold:download_locales
 
 Have a look at the options supported by the generator:
 
-  > script/generate localized_scaffold
+  script/generate localized_scaffold
 
 As a first test, just add a sample scaffold:
 
-  > script/generate localized_scaffold bar name:string seats:integer
-  > rake db:migrate
+  script/generate localized_scaffold bar name:string seats:integer
+  rake db:migrate
 
-  > script/server
+  script/server
 
 Now open your browser and visit "http://localhost:3000/bars". Have fun!
 And please contribute by sending in your localized versions of the default
@@ -94,8 +94,41 @@ a simple search form for fast access to known objects. That's exactly what
 new option <code>--searchbar</code> does. It supports the
 <code>--belongs_to</code> option but is also  useful without.
 
+Here again a sample:
+
+  script/generate localized_scaffold company name:string about:text \
+    --searchbar name
+
 There is enough to do till you have a nice app and this is still scaffolding
 and nothing more, but it saves some more annoying work...
+
+== Demo
+
+As a wrap up, here is a complete sample of a simple phone book only using
+scaffolding:
+
+  rails phonebook
+  cd phonebook
+
+  sudo gem install will_paginate
+  script/plugin install git://github.com/ulbrich/localized_scaffold.git
+
+  rake localized_scaffold:configure
+  rake localized_scaffold:download_locales
+
+  script/generate localized_scaffold person lastname:string firstname:string \
+    --searchbar lastname
+  script/generate localized_scaffold phone person_id:integer kind:string \
+    number:string --belongs_to person
+
+  rake db:migrate
+
+  script/server
+
+Now open http://localhost:3000/people and have a try...
+
+Finally have a look at the localization files generated in "app/locale" and
+edit the non-english files.
 
 == Copyright & License
 
