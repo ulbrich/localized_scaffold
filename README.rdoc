@@ -132,7 +132,11 @@ scaffolding:
   script/server
 
 Now open http://localhost:3000/people to test the application and finally have
-a look at the localization files generated in "app/locale".
+a look at the localization files generated in "app/locale". Continue with your
+own modifications: For example the show view doesn't make sense for small
+objects like the phone number, so remove the view and modify linking. And it
+might be nicer to display the name of the person instead of an ID on the index
+view of the phone numbers. 
 
 == Copyright & License
 
