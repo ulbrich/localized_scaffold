@@ -21,6 +21,7 @@ Here are the steps to get a first impression about the plugin:
 Optionally install the "will_paginate" gem to automatically add pagination
 using this library for every generated scaffold.
 
+  sudo gem sources -a http://gemcutter.org  # Only needed once!
   sudo gem install will_paginate
 
 The plugin will store a standard set of localization files in "lib/locale" and
@@ -55,7 +56,10 @@ As a first test, just add a sample scaffold:
 
   script/server
 
-Now open your browser and visit "http://localhost:3000/bars". Have fun!
+Now open your browser and visit "http://localhost:3000/bars" to test the
+application and finally have a look at the localization files generated in
+"app/locale".
+
 And please contribute by sending in your localized versions of the default
 and standard strings. :-)
 
@@ -110,7 +114,9 @@ scaffolding:
   rails phonebook
   cd phonebook
 
+  sudo gem sources -a http://gemcutter.org  # Only needed once!
   sudo gem install will_paginate
+
   script/plugin install git://github.com/ulbrich/localized_scaffold.git
 
   rake localized_scaffold:configure
@@ -125,10 +131,8 @@ scaffolding:
 
   script/server
 
-Now open http://localhost:3000/people and have a try...
-
-Finally have a look at the localization files generated in "app/locale" and
-edit the non-english files.
+Now open http://localhost:3000/people to test the application and finally have
+a look at the localization files generated in "app/locale".
 
 == Copyright & License
 
