@@ -17,7 +17,7 @@ module <%= controller_class_name %>Helper
     if collection.total_entries > 1
       pager = will_paginate(collection, { :inner_window => 10,
                 :next_label => t('standard.cmds.next_page'),
-                :prev_label => t('standard.cmds.previous_page') }.merge(options))
+                :previous_label => t('standard.cmds.previous_page') }.merge(options))
 
       return (pager + ' |') if not pager.blank?
     end

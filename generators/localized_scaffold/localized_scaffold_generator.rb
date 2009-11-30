@@ -23,7 +23,7 @@ class LocalizedScaffoldGenerator < ScaffoldGenerator
   def initialize(runtime_args, runtime_options = {})
     super
 
-    if ['url'].include? file_name # More to come...
+    if ['url', 'text'].include? file_name # More to come...
       raise ArgumentError, "!!A model named #{file_name} will bring trouble."
     end
 
