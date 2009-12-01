@@ -109,9 +109,14 @@ table.searchbar td.selected strong {
 }
   
 .fieldWithErrors {
+  display: inline;
+}
+.fieldWithErrors > label {
+}
+.fieldWithErrors > input, .fieldWithErrors > textarea, .fieldWithErrors > select {
   padding: 2px;
-  background-color: #cc0000;
-  display: table;
+  background-color: #ffe0e0;
+  display: inline;
 }
 
 #errorExplanation {
