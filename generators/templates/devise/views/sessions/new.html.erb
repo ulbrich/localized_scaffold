@@ -1,0 +1,27 @@
+<%% title(t('devise.views.sessions.title')) %>
+
+<%%= form_for(resource, :as => resource_name,
+  :url => session_path(resource_name)) do |f| %>
+    <div class="field">
+      <%%= f.label :email, t('activerecord.attributes.<%= name %>.email') %><br />
+      <%%= f.text_field :email %>
+    </div>
+
+    <div class="field">
+      <%%= f.label :password, t('activerecord.attributes.<%= name %>.password') %><br />
+      <%%= f.password_field :password %>
+    </div>
+
+    <%% if devise_mapping.rememberable? -%>
+      <p>
+        <%%= f.check_box :remember_me %>
+        <%%= f.label :remember_me, t('activerecord.attributes.<%= name %>.remember_me') %>
+      </p>
+    <%% end -%>
+
+    <p>
+      <%%= f.submit t('devise.views.cmds.sign_in') %>
+    </p>
+<%% end %>
+
+<%%= render :partial => 'devise/shared/links' %>

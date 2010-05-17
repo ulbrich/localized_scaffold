@@ -1,0 +1,45 @@
+en:
+  errors:
+    messages:
+      not_found: "nicht gefunden"
+      already_confirmed: "wurde bereits bestätigt"
+      not_locked: "war nicht gesperrt"
+
+  devise:
+    failure:
+      unauthenticated: "Sie müssen sich anmelden oder registrieren bevor es
+        weitergeht."
+      unconfirmed: "Sie müssen Ihren Account bestätigen bevor es weitergeht."
+      locked: "Ihr Account wurde gesperrt."
+      invalid: "Login oder Passwort ungültig."
+      invalid_token: "Ungültiger Autorisierungsschlüssel."
+      timeout: "Ihre Session ist abgelaufen. Bitte melden Sie sich erneut an."
+      inactive: "Ihr Account wurde noch nicht aktiviert."
+    sessions:
+      signed_in: "Erfolgreich angemeldet."
+      signed_out: "Erfolgreich abgemeldet."
+    passwords:
+      send_instructions: "Sie erhalten in ein paar Minuten eine E-Mail mit
+        der Anleitung, wie Sie Ihr Passwort zurücksetzen können."
+      updated: "Ihr Passwort wurde erfolgreich gesetzt. Sie sind nun
+        angemeldet."
+    confirmations:
+      send_instructions: "Sie erhalten in wenigen Minuten eine E-Mail mit der
+        Anleitung, wie Sie Ihren Account aktivieren."
+      confirmed: "Ihr Account wurde erfolgreich bestätigt. Sie sind nun
+        angemeldet."
+    registrations:
+      signed_up: "Sie haben sich erfolgreich registriert und erhalten zur
+        Bestätigung eine E-Mail."
+      updated: "Sie haben Ihren Account erfolgreich aktualisiert."
+      destroyed: "Auf Wiedersehen! Ihr Account wurde erfolgreich gelöscht.
+        Wir hoffen trotzdem Sie bald wiederzusehen."
+    unlocks:
+      send_instructions: "Sie erhalten in ein paar Minuten eine E-Mail mit
+        der Anleitung, wie Sie Ihren Account entsperren können."
+      unlocked: "Ihr Account wurde erfolgreich entsperrt. Sie sind nun
+        angemeldet."
+    mailer:
+      confirmation_instructions: "Anleitung für die Aktivierung Ihres Accounts"
+      reset_password_instructions: "Anleitung für das Zurücksetzen Ihres Passworts"
+      unlock_instructions: "Anleitung für das Entsperren Ihres Accounts"

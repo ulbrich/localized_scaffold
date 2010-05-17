@@ -1,0 +1,25 @@
+<%% title(t('devise.views.passwords.edit.title')) %>
+
+<%%= form_for(resource, :as => resource_name,
+  :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+    <%%= f.error_messages :header_message => t('devise.views.errors.template.header_message'),
+      :message => t('devise.views.errors.template.message') %>
+    <%%= f.hidden_field :reset_password_token %>
+
+    <div class="field">
+      <%%= f.label :password, t('activerecord.attributes.<%= name %>.password') %><br />
+      <%%= f.password_field :password %>
+    </div>
+
+    <div class="field">
+      <%%= f.label :password_confirmation,
+        t('activerecord.attributes.<%= name %>.password_confirmation') %><br />
+      <%%= f.password_field :password_confirmation %>
+    </div>
+
+    <p>
+      <%%= f.submit t('devise.views.cmds.change_password') %>
+    </p>
+<%% end %>
+
+<%%= render :partial => 'devise/shared/links' %>

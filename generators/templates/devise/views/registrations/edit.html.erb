@@ -1,0 +1,49 @@
+<%% title(t('devise.views.registrations.edit.title',
+  :account => resource_name.to_s.humanize)) %>
+
+<%%= form_for(resource, :as => resource_name,
+  :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+    <%%= f.error_messages :header_message => t('devise.views.errors.template.header_message'),
+      :message => t('devise.views.errors.template.message') %>
+
+    <div class="field">
+      <%%= f.label :email, t('activerecord.attributes.<%= name %>.email') %><br />
+    </div>
+
+    <div class="field">
+      <%%= f.label :password, t('activerecord.attributes.<%= name %>.password') %>
+      <span class="decent">
+        <%%= t('devise.views.registrations.password_info') %>
+      </span><br />
+      <%%= f.password_field :password %>
+    </div>
+
+    <div class="field">
+      <%%= f.label :password_confirmation,
+        t('activerecord.attributes.<%= name %>.password_confirmation') %><br />
+      <%%= f.password_field :password_confirmation %>
+    </div>
+
+    <div class="field">
+      <%%= f.label :current_password, t('activerecord.attributes.<%= name %>.current_password') %>
+      <span class="decent">
+        <%%= t('devise.views.registrations.current_password_info') %>
+      </span><br />
+      <%%= f.password_field :current_password %>
+    </div>
+
+    <p>
+      <%%= f.submit t('standard.cmds.update') %>
+    </p>
+<%% end %>
+
+<h3><%%= t('devise.views.registrations.edit.cancel_title') %></h3>
+
+<p>
+  <%%= t('devise.views.registrations.edit.cancel_intro') %>
+  <%%= link_to t('devise.views.cmds.cancel_account'),
+    registration_path(resource_name),
+    :confirm => t('standard.labels.are_you_sure'), :method => :delete %>.
+</p>
+
+<%%= link_to t('standard.cmds.back'), :back %>

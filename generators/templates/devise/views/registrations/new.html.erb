@@ -1,0 +1,29 @@
+<%% title(t('devise.views.registrations.new.title')) %>
+
+<%%= form_for(resource, :as => resource_name,
+  :url => registration_path(resource_name)) do |f| %>
+    <%%= f.error_messages :header_message => t('devise.views.errors.template.header_message'),
+      :message => t('devise.views.errors.template.message') %>
+
+    <div class="field">
+      <%%= f.label :email, t('activerecord.attributes.<%= name %>.email') %><br />
+      <%%= f.text_field :email %>
+    </div>
+
+    <div class="field">
+      <%%= f.label :password, t('activerecord.attributes.<%= name %>.password') %><br />
+      <%%= f.password_field :password %>
+    </div>
+
+    <div class="field">
+      <%%= f.label :password_confirmation,
+        t('activerecord.attributes.<%= name %>.password_confirmation') %><br />
+      <%%= f.password_field :password_confirmation %>
+    </div>
+
+    <p>
+      <%%= f.submit t('devise.views.cmds.sign_up') %>
+    </p>
+<%% end %>
+
+<%%= render :partial => 'devise/shared/links' %>

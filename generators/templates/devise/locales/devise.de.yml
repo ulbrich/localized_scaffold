@@ -1,0 +1,60 @@
+en:
+  activerecord:
+    errors:
+      models:
+        <%= name %>:
+          attributes:
+            email:
+              not_found: "not found"
+              already_confirmed: "was already confirmed"
+              not_locked: "was not locked"
+
+de:
+  activerecord:
+    errors:
+      models:
+        <%= name %>:
+          attributes:
+            email:
+              not_found: "nicht gefunden"
+              already_confirmed: "wurde bereits bestätigt"
+              not_locked: "war nicht gesperrt"
+
+  devise:
+    failure:
+      unauthenticated: "Du musst Dich anmelden oder registrieren bevor es
+        weitergeht."
+      unconfirmed: "Du musst Deinen Account bestätigen bevor es weitergeht."
+      locked: "Dein Account wurde gesperrt."
+      invalid: "Login oder Passwort ungültig."
+      invalid_token: "Ungültiger Autorisierungsschlüssel."
+      timeout: "Deine Session ist abgelaufen. Bitte melde Dich erneut an."
+      inactive: "Dein Account wurde noch nicht aktiviert."
+    sessions:
+      signed_in: "Erfolgreich angemeldet."
+      signed_out: "Erfolgreich abgemeldet."
+    passwords:
+      send_instructions: "Du erhältst in ein paar Minuten eine E-Mail mit
+        der Anleitung, wie Du Dein Passwort zurücksetzen kannst."
+      updated: "Dein Passwort wurde erfolgreich gesetzt. Du bist nun
+        angemeldet."
+    confirmations:
+      send_instructions: "Du erhältst in wenigen Minuten eine E-Mail mit der
+        Anleitung, wie Du Deinen Account aktivierst."
+      confirmed: "Dein Account wurde erfolgreich bestätigt. Du bist nun
+        angemeldet."
+    registrations:
+      signed_up: "Du hast Dich erfolgreich registriert und erhältst zur
+        Bestätigung eine E-Mail."
+      updated: "Du hast Deinen Account erfolgreich aktualisiert."
+      destroyed: "Auf Wiedersehen! Dein Account wurde erfolgreich gelöscht.
+        Wir hoffen trotzdem Dich bald wiederzusehen."
+    unlocks:
+      send_instructions: "Du erhältst in ein paar Minuten eine E-Mail mit
+        der Anleitung, wie Du Deinen Account entsperren kannst."
+      unlocked: "Dein Account wurde erfolgreich entsperrt. Du bist nun
+        angemeldet."
+    mailer:
+      confirmation_instructions: "Anleitung für die Aktivierung Deines Accounts"
+      reset_password_instructions: "Anleitung für das Zurücksetzen Deines Passworts"
+      unlock_instructions: "Anleitung für das Entsperren Deines Accounts"

@@ -5,10 +5,10 @@
 Rails plugin "localized_scaffold" provides a generator for scaffolding
 with the same parameters as the orginal "scaffold" generator but producing
 localized views and localized controller flashes plus some nicer user
-interface.
+interface. Localized Rails scaffolding with style...
 
 Just give it a try and toss it away if you don't like it -- it's pretty easy
-to have a test drive...
+to have a test drive.
 
 == Installation and usage
 
@@ -16,7 +16,7 @@ Here are the steps to get a first impression about the plugin:
 
   rails foo
   cd foo
-  script/plugin install git://github.com/ulbrich/localized_scaffold.git
+  rails plugin install git://github.com/ulbrich/localized_scaffold.git
 
 Optionally install the "will_paginate" gem to automatically add pagination
 using this library for every generated scaffold.
@@ -47,14 +47,14 @@ Fuchs at github (git://github.com/svenfuchs/rails-i18n.git) to "lib/locale":
 
 Have a look at the options supported by the generator:
 
-  script/generate localized_scaffold
+  rails generate localized_scaffold
 
 As a first test, just add a sample scaffold:
 
-  script/generate localized_scaffold bar name:string seats:integer
+  rails generate localized_scaffold bar name:string seats:integer
   rake db:migrate
 
-  script/server
+  rails server
 
 Now open your browser and visit "http://localhost:3000/bars" to test the
 application and finally have a look at the localization files generated in
@@ -71,20 +71,19 @@ search form.
 
 === Belongs to something
 
-There is a new option <code>--belongs_to</code> which can be used to generate
+There is a new option <code>--belongsto</code> which can be used to generate
 model, controller and views for something like companies having many addresses
 or phone numbers.
 
 Here is a sample for exactly that:
 
-  script/generate localized_scaffold company name:string about:text
+  rails generate localized_scaffold company name:string about:text
 
-  script/generate localized_scaffold address --belongs_to company \
-    company_id:integer kind:string street:string zip:string town:string \
-    state:string country:string 
+  rails generate localized_scaffold address --belongsto company company_id:integer \
+    what:string street:string zip:string town:string state:string country:string 
 
-  script/generate localized_scaffold email --belongs_to company \
-    company_id:integer kind:string number:string
+  rails generate localized_scaffold email --belongsto company company_id:integer \
+    what:string number:string
 
 There is only little linking between the interfaces and you should double check
 your routes, but after creating a new company at "/companies/new", you will 
@@ -97,11 +96,11 @@ When there are lots of records, it makes sense to have an ABC strip of the
 chars a certain field of the records start with. And it would be nice to offer
 a simple search form for fast access to known objects. That's exactly what
 new option <code>--searchbar</code> does. It supports the
-<code>--belongs_to</code> option but is also  useful without.
+<code>--belongsto</code> option but is also  useful without.
 
 Here again a sample:
 
-  script/generate localized_scaffold company name:string about:text \
+  rails generate localized_scaffold company name:string about:text \
     --searchbar name
 
 There is enough to do till you have a nice app and this is still scaffolding
@@ -109,8 +108,8 @@ and nothing more, but it saves some more annoying work...
 
 == Demo
 
-As a wrap up, here is the complete sample from above with a small company
-management site using only scaffolding:
+As a wrap up, here is a complete sample of a simple phone book only using
+scaffolding:
 
   rails phonebook
   cd phonebook
@@ -118,32 +117,24 @@ management site using only scaffolding:
   sudo gem sources -a http://gemcutter.org  # Only needed once!
   sudo gem install will_paginate
 
-  script/plugin install git://github.com/ulbrich/localized_scaffold.git
+  rails plugin install git://github.com/ulbrich/localized_scaffold.git
+
+  rails plugin install git://github.com/rails/dynamic_form.git # Error messages
 
   rake localized_scaffold:configure
   rake localized_scaffold:download_locales
 
-  script/generate localized_scaffold company name:string about:text \
-    --searchbar name
-
-  script/generate localized_scaffold address --belongs_to company \
-    company_id:integer kind:string street:string zip:string town:string \
-    state:string country:string 
-
-  script/generate localized_scaffold email --belongs_to company \
-    company_id:integer kind:string number:string
+  rails generate localized_scaffold person lastname:string firstname:string \
+    --searchbar lastname
+  rails generate localized_scaffold phone person_id:integer kind:string \
+    number:string --belongsto person
 
   rake db:migrate
 
-  script/server
+  rails server
 
-Now open http://localhost:3000/companies to test the application and finally
-have a look at the localization files generated in "app/locale".
-
-Continue with your own modifications: For example the show view doesn't make
-sense for small objects like the e-mail address, so remove the view and modify
-linking. And it might be nicer to display the name of the company instead of
-an ID on the index view of the addresses and e-mail addresses... 
+Now open http://localhost:3000/people to test the application and finally have
+a look at the localization files generated in "app/locale".
 
 == Copyright & License
 

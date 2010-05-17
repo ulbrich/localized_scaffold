@@ -1,0 +1,79 @@
+en:
+  activerecord:
+    attributes:
+      <%= name %>:
+        email: "E-mail address"
+        password: "Password"
+        current_password: "Current password"
+        password_confirmation: "Password (confirmation)"
+        remember_me: "Remember me"
+
+  devise:
+    views:
+      cmds:
+        cancel_account: "Cancel my account"
+        change_password: "Change my password"
+        confirm_account: "Confirm my account"
+        forgot_password: "Forgot your password?"
+        missing_confirm_email: "Didn't receive confirmation instructions?"
+        missing_unlock_email: "Didn't receive unlock instructions?"
+        resend_confirmation: "Resend confirmation instructions"
+        reset_password: "Send me reset password instructions"
+        send_unlock_info: "Resend confirmation instructions"
+        sign_in: "Sign in"
+        sign_up: "Sign up"
+        unlock_account: "Unlock my account"
+
+      errors:
+        template:
+          header_message: "Could not save data."
+          message: "Please check the following fields:"
+
+      confirmations:
+        title: "Resend confirmation instructions"
+
+      mailer:
+        confirmation_instructions:
+          text: "<p>Welcome {{account}}!</p>
+<p>You can confirm your account through the link below:</p>"
+
+        unlock_instructions:
+          text: "<p>Hello {{account}}!</p>
+<p>Your account has been locked due to an excessive amount of unsuccessful
+sign in attempts.</p>
+<p>Click the link below to unlock your account:</p>"
+
+        reset_password_instructions:
+          upper: "<p>Hello {{account}}!</p>
+<p>Someone has requested a link to change your password, and you can do this
+through the link below.</p>"
+
+          lower: "<p>If you didn't request this, please ignore this email.</p>
+<p>Your password won't change until you access the link above and create a
+new one.</p>"
+
+      passwords:
+        edit:
+          title: "Change your password"
+
+        new:            
+          title: "Forgot your password?"
+        
+      registrations:   
+        current_password_info: "we need your current password to confirm your
+          changes"
+        password_info: "leave blank if you don't want to change it"
+
+        edit:
+          title: "Edit {{account}}"
+          cancel_title: "Cancel my account"
+          cancel_intro: "Unhappy?"
+
+        new:
+          title: "Sign up"
+
+      sessions:
+        title: "Sign in"
+
+      unlocks:
+        title: "Resend unlock instructions"

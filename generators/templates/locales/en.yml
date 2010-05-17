@@ -1,0 +1,60 @@
+en:
+  activerecord:
+    models:
+      <%= file_name %>: "<%= class_name %>"
+
+    attributes:
+      <%= file_name %>:
+        <%- attributes.each do |a| -%>
+        <%= a.name %>: "<%= a.name.humanize %>"
+        <%- end -%>
+
+  <%= file_name %>:
+    cmds:
+      list: "List <%= plural_name %>"
+      new: "New <%= singular_name %>"
+
+<%- if not listifies.empty? -%>
+    selects:
+<%- listifies.each do |field, values| -%>
+      <%= field %>:
+<%- values.each do |value| -%>
+        <%= value %>: <%= value.humanize %>
+<%- end -%>
+
+<%- end -%>
+<%- end -%>
+    errors:
+      template:
+        header_message: "<%= singular_name.humanize %> could not be saved."
+        message: "Please check the following fields:"
+
+      not_found: "<%= class_name %> not found."
+
+    create:
+      flash: "<%= class_name %> was successfully created."
+
+    destroy:
+      flash: "<%= class_name %> was successfully deleted."
+
+    edit:
+      title: "Editing <%= singular_name %>"
+<% unless options[:singleton] %>
+    index:
+    <%- if has_belongsto? -%>
+      title: "<%= plural_name.humanize %> of <%= belongsto.singular_name %> {{parent}}"
+    <%- else -%>
+      title: "<%= plural_name.humanize %>"
+    <%- end -%>
+<%- end -%>
+<%- if embed? %>
+    indexpartial:
+      title: "<%= plural_name.humanize %>"
+      empty: "No <%= plural_name %> so far"
+<%- end -%>
+
+    new:
+      title: "New <%= singular_name %>"
+
+    update:
+      flash: "<%= class_name %> was successfully updated."

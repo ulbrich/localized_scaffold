@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<%%= I18n.locale
+  -%>" xml:lang="<%%= I18n.locale -%>">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+<%%- if (title = yield(:title)).blank? -%>
+  <title><%%= controller.controller_name + ':' + controller.action_name %></title>
+<%%- else -%>
+  <title><%%= title %></title>
+<%%- end -%>
+
+  <%%= stylesheet_link_tag 'scaffold' %>
+
+<%- if has_javascript_jquery? -%>
+  <%%= javascript_include_tag 'jquery', 'application' %>
+<% elsif has_javascript_prototype? -%>
+  <%%= javascript_include_tag :defaults %>
+<% end -%>
+
+  <%%= csrf_meta_tag %>
+
+  <%%= yield :head -%>
+</head>
+<body>
+
+<div id="flashMessages">          
+  <%%= ActiveSupport::SafeBuffer.new([:notice, :warning, :error].collect do |type|
+    content_tag(:div, flash[type], :id => type, :class => type) if flash[type]
+  end.to_s) %>
+</div>
+
+<%%- unless title.blank? -%>
+<h1><%%= title %></h1>
+<%%- end -%>
+
+<%%= yield %>
+<%- if has_javascript_jquery? or has_javascript_prototype? -%>
+
+<%%= yield :patches -%>
+<%- end -%>
+</body>
+</html>

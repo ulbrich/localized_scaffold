@@ -1,0 +1,18 @@
+<%% title(t('<%= file_name %>.new.title')) %>
+
+<%%= form_for(@<%= singular_name %>, :url => <%= path_of_with_belongsto_if_any(:value1 => "@#{singular_name}") %>,
+  :html => { :multipart => true }) do |f| %>
+    <%%= f.error_messages :header_message => t('<%= file_name %>.errors.template.header_message'),
+      :message => t('<%= file_name %>.errors.template.message') %>
+
+    <%%= render :partial => 'form', :locals => { :f => f } %>
+
+    <p>
+      <%%= f.submit t('standard.cmds.create') %>
+
+      <span class="decent">
+        <%%= t('standard.labels.or') %>
+        <%%= link_to t('standard.cmds.cancel'), <%= path_of_with_belongsto_if_any %> %>
+      </span>
+    </p>
+<%% end %>

@@ -1,0 +1,6 @@
+<%%= t('devise.views.mailer.confirmation_instructions.text', :account => @resource.email) %>
+
+<p>
+  <%%= link_to t('devise.views.cmds.confirm_account'),
+    confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %>
+</p>

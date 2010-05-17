@@ -1,0 +1,6 @@
+<%%= t('devise.views.mailer.unlock_instructions.text', :account => @resource.email) %>
+
+<p>
+  <%%= link_to t('devise.views.cmds.unlock_account'),
+    unlock_url(@resource, :unlock_token => @resource.unlock_token) %>
+</p>

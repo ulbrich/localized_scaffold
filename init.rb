@@ -1,0 +1,3 @@
+# Localized Rails scaffolding with style...
+
+require File.join(File.dirname(__FILE__), 'localized_scaffold.rb')

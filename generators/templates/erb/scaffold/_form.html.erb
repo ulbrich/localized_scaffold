@@ -1,0 +1,11 @@
+<% for attribute in attributes -%>
+  <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
+  <div class="field">
+    <%%= f.label :<%= attribute.name %>, t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %><br />
+<%- if listifies.include? attribute.name -%>
+    <%%= f.select :<%= attribute.name %>, <%= class_name %>.<%= attribute.name.pluralize %>_for_select %>
+<%- else -%>
+    <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
+<%- end -%>
+  </div>
+<% end -%>

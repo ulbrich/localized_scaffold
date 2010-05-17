@@ -1,0 +1,20 @@
+<%% title(t('<%= file_name %>.edit.title')) %>
+
+<%%= form_for(@<%= singular_name %>, :url => <%= path_of_with_belongsto_if_any(:method => :update) %>,
+  :html => { :multipart => true, :method => :put }) do |f| %>
+    <%%= f.error_messages :header_message => t('<%= file_name %>.errors.template.header_message'),
+      :message => t('<%= file_name %>.errors.template.message') %>
+
+    <%%= render :partial => 'form', :locals => { :f => f } %>
+
+    <p>
+      <%%= f.submit t('standard.cmds.update') %>
+
+      <span class="decent">
+        <%%= t('standard.labels.or') %>
+        <%%= link_to t('standard.cmds.cancel'), <%= path_of_with_belongsto_if_any(:method => :show) %> %> |
+        <%%= link_to t('standard.cmds.destroy'), <%= path_of_with_belongsto_if_any(:method => :show) %>,
+          :confirm => t('standard.labels.are_you_sure'), :method => :delete %>
+      </span>
+    </p>
+<%% end %>

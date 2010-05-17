@@ -1,0 +1,78 @@
+de:
+  activerecord:
+    attributes:
+      <%= name %>:
+        email: "E-Mail-Adresse"
+        password: "Passwort"
+        current_password: "Aktuelles Passwort"
+        password_confirmation: "Passwort (Wiederholung)"
+        remember_me: "Anmeldung merken"
+
+  devise:
+    views:
+      cmds:
+        cancel_account: "Account löschen"
+        change_password: "Mein Passwort ändern"
+        confirm_account: "Account bestätigen"
+        forgot_password: "Passwort vergessen?"
+        missing_confirm_email: "Bestätigungsmail nicht erhalten?"
+        missing_unlock_email: "Entsperrinformation nicht erhalten?"
+        resend_confirmation: "Bestätigungslink zusenden"
+        reset_password: "Passwort zurücksetzen"
+        send_unlock_info: "Bestätigungsmail erneut zusenden"
+        sign_in: "Anmelden"
+        sign_up: "Registrieren"
+        unlock_account: "Account entsperren"
+
+      errors:
+        template:
+          header_message: "Daten konnten nicht gespeichert werden."
+          message: "Bitte folgende Felder überprüfen:"
+
+      confirmations:
+        title: "Bestätigungslink erneut zusenden"
+
+      mailer:
+        confirmation_instructions:
+          text: "<p>Hallo {{account}}!</p>
+<p>Herzlich willkommen! Bitte jetzt noch den folgenden Link anklicken um den
+Account zu bestätigen:</p>"
+
+        unlock_instructions:
+          text: "<p>Hallo {{account}}!</p>
+<p>Dieser Account wurde zur Sicherheit gesperrt, da zu oft versucht wurde sich
+damit mit einem falschen Passwort anzumelden.</p>
+<p>Bitte den folgenden Link anklicken um den Account wieder zu entsperren:</p>"
+
+        reset_password_instructions:
+          upper: "<p>Hallo {{account}}!</p>
+<p>Mit dem folgenden Link kann ein neues Passwort gesetzt werden:</p>"
+
+          lower: "<p>Wenn ein Fremder ein neues Passwort angefordert hat, dann
+einfach die E-Mail ignorieren: Ohne den Link kann niemand etwas anstellen.</p>"
+
+      passwords:
+        edit:
+          title: "Passwort ändern"
+
+        new:            
+          title: "Passwort vergessen?"
+        
+      registrations:   
+        current_password_info: "wird für das Setzen eines neuen Passworts
+          benötigt"
+        password_info: "nur wenn das Passwort geändert werden soll"
+
+        edit:
+          title: "Account {{account}} bearbeiten"
+          cancel_title: "Account löschen"
+          cancel_intro: "Unzufrieden?"
+
+        new:
+          title: "Registrierung"
+
+      sessions:
+        title: "Anmelden"
+
+      unlocks:
+        title: "Entsperrinformation zusenden"

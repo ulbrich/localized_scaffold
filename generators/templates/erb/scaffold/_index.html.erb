@@ -1,0 +1,54 @@
+<%- if has_belongsto? -%>
+<h3>
+  <%%= t('<%= file_name %>.indexpartial.title', :parent => @<%= belongsto.file_name %>.id) %>
+<%- else -%>
+<h3>
+  <%%= t('<%= file_name %>.indexpartial.title') %>
+<%- end -%>
+
+  <%%= link_to t('standard.cmds.add'), <%= path_of_with_belongsto_if_any(:method => :new) %>,
+    :class => 'small decent' %>  
+
+  <%%- if (max ||= <%= plural_name %>.count) and <%= plural_name %>.count > max -%>
+    <%%= link_to t('standard.cmds.all'), <%= path_of_with_belongsto_if_any %>,
+      :class => 'small decent' %>
+  <%%- end -%>
+</h3>
+
+<%%- if <%= plural_name %>.count == 0 -%>
+<p class="decent">
+  <%%= t('<%= file_name %>.indexpartial.empty') %>
+</p>
+<%%- else -%>
+<table class="wide">
+  <tr>
+  <%- for attribute in attributes -%>
+    <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
+    <th><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %></th>
+  <%- end -%>
+    <th>&nbsp;</th>
+  </tr>
+
+  <%% <%= plural_name %>[0...max].each do |<%= singular_name %>| %>
+    <tr>
+    <%- for attribute in attributes -%>
+      <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
+<%- if listifies.include? attribute.name -%>
+      <td><%%= <%= class_name %>.<%= attribute.name %>_label(<%= singular_name %>.<%= attribute.name %>) %></td>
+<%- else -%>
+      <td><%%=h <%= singular_name %>.<%= attribute.name %> %></td>
+<%- end -%>
+    <%- end -%>
+
+      <td class="last cmds">
+<%- if generate_showview? -%>
+        <%%= link_to t('standard.cmds.show'), <%= path_of_with_belongsto_if_any(:method => :show, :value1 => "#{singular_name}") %> %> |
+<%- end -%>
+        <%%= link_to t('standard.cmds.edit'), <%= path_of_with_belongsto_if_any(:method => :edit, :value1 => "#{singular_name}") %> %> |
+        <%%= link_to t('standard.cmds.destroy'), <%= path_of_with_belongsto_if_any(:method => :show, :value1 => "#{singular_name}") %>,
+          :confirm => t('standard.labels.are_you_sure'), :method => :delete %>
+      </td>
+    </tr>
+  <%% end %>
+</table>
+<%%- end -%>

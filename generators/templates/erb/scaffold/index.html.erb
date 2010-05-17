@@ -1,0 +1,72 @@
+<%- if has_belongsto? -%>
+<%% title(t('<%= file_name %>.index.title', :parent => @<%= belongsto.file_name %>.id)) %>
+<%- else -%>
+<%% title(t('<%= file_name %>.index.title')) %>
+<%- end -%>
+
+<%- if has_searchbar? and (has_javascript_jquery? or has_javascript_prototype?) -%>
+<%% content_for(:patches) do %>
+<script type="text/javascript">
+
+<%- if has_javascript_jquery? -%>
+$("input#searchbar-term").click(function(e) {
+  this.value = "";
+});
+<%- elsif has_javascript_prototype? -%>
+$("searchbar-term").onclick = function() { $("searchbar-term").value = ""; }
+<%- end -%>
+
+</script>
+<%% end %>
+
+<%%= <%= file_name %>_searchbar(@searchbar.chars, @searchbar.term) %>
+
+<%- end -%>
+<table class="wide">
+  <tr>
+  <%- for attribute in attributes -%>
+    <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
+    <th><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %></th>
+  <%- end -%>
+    <th>&nbsp;</th>
+  </tr>
+
+  <%% @<%= plural_name %>.each do |<%= singular_name %>| %>
+    <tr>
+    <%- for attribute in attributes -%>
+      <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
+<%- if listifies.include? attribute.name -%>
+      <td><%%= <%= class_name %>.<%= attribute.name %>_label(<%= singular_name %>.<%= attribute.name %>) %></td>
+<%- else -%>
+      <td><%%=h <%= singular_name %>.<%= attribute.name %> %></td>
+<%- end -%>
+    <%- end -%>
+
+      <td class="last cmds">
+<%- if generate_showview? -%>
+        <%%= link_to t('standard.cmds.show'), <%= path_of_with_belongsto_if_any(:method => :show, :value1 => "#{singular_name}") %> %> |
+<%- end -%>
+        <%%= link_to t('standard.cmds.edit'), <%= path_of_with_belongsto_if_any(:method => :edit, :value1 => "#{singular_name}") %> %> |
+        <%%= link_to t('standard.cmds.destroy'), <%= path_of_with_belongsto_if_any(:method => :show, :value1 => "#{singular_name}") %>,
+          :confirm => t('standard.labels.are_you_sure'), :method => :delete %>
+      </td>
+    </tr>
+  <%% end %>
+</table>
+
+<p>
+<%- if has_will_paginate? -%>
+  <%%= <%= file_name %>_pagination @<%= table_name %> %>
+
+<%- end -%>
+  <%%= link_to t('<%= file_name %>.cmds.new'), <%= path_of_with_belongsto_if_any(:method => :new) %> %>
+
+  <span class="decent">
+    <%%= t('standard.labels.or') %>
+  <%- if has_belongsto? -%>
+    <%%= link_to t('standard.cmds.back'), <%= belongsto.singular_name %>_path(@<%= belongsto.singular_name %>) %>
+  <%- else -%>
+    <%%= link_to t('standard.cmds.home'), defined?(root_path) ? root_path : '/' %>
+  <%- end -%>
+  </span>
+</p>

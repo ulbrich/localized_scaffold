@@ -1,0 +1,60 @@
+de:
+  activerecord:
+    models:
+      <%= file_name %>: "<%= class_name %>"
+
+    attributes:
+      <%= file_name %>:
+        <%- attributes.each do |a| -%>
+        <%= a.name %>: "<%= a.name.humanize %>"
+        <%- end -%>
+
+  <%= file_name %>:
+    cmds:
+      list: "<%= plural_name.humanize %> anzeigen"
+      new: "<%= class_name %> anlegen"
+
+<%- if not listifies.empty? -%>
+    selects:
+<%- listifies.each do |field, values| -%>
+      <%= field %>:
+<%- values.each do |value| -%>
+        <%= value %>: <%= value.humanize %>
+<%- end -%>
+
+<%- end -%>
+<%- end -%>
+    errors:
+      template:
+        header_message: "<%= singular_name.humanize %> konnte nicht gespeichert werden."
+        message: "Bitte folgende Felder überprüfen:"
+
+      not_found: "<%= class_name %> nicht gefunden."
+
+    create:
+      flash: "<%= class_name %> erfolgreich angelegt."
+
+    destroy:
+      flash: "<%= class_name %> erfolgreich gelöscht."
+
+    edit:
+      title: "<%= class_name %> bearbeiten"
+<% unless options[:singleton] %>
+    index:
+    <%- if has_belongsto? -%>
+      title: "<%= plural_name.humanize %> von <%= belongsto.singular_name.humanize %> {{parent}}"
+    <%- else -%>
+      title: "<%= plural_name.humanize %>"
+    <%- end -%>
+<%- end -%>
+<%- if embed? %>
+    indexpartial:
+      title: "<%= plural_name.humanize %>"
+      empty: "Bisher keine <%= plural_name.humanize %>"
+<%- end -%>
+
+    new:
+      title: "<%= class_name %> anlegen"
+
+    update:
+      flash: "<%= class_name %> erfolgreich gespeichert."
