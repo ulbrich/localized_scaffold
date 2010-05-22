@@ -2,46 +2,63 @@
 
 == About
 
-Rails plugin "localized_scaffold" provides a generator for scaffolding
-with the same parameters as the orginal "scaffold" generator but producing
-localized views and localized controller flashes plus some nicer user
-interface. Localized Rails scaffolding with style...
+The "localized_scaffold" gem provides a Rails 3 generator for scaffolding
+with the same parameters as the orginal scaffold generator (it actually
+overwrites the original code) but producing localized views and localized
+controller flashes. It also generates a nicer user interface (for example with
+a title helper instead of generating h2) and produces a controller with some
+comments which also supports JSON. Localized Rails scaffolding with style...
 
 Just give it a try and toss it away if you don't like it -- it's pretty easy
-to have a test drive.
+to have a test drive (see sample below).
+
+Rails 2: There is a Rails 2 compatible version which has to be installed as
+a Rails plugin instead of a gem. The latest version can be installed with
+[...].
 
 == Installation and usage
 
-Here are the steps to get a first impression about the plugin:
+Here are the steps to get a first impression about the generator:
 
   rails foo
   cd foo
-  rails plugin install git://github.com/ulbrich/localized_scaffold.git
 
-Optionally install the "will_paginate" gem to automatically add pagination
-using this library for every generated scaffold.
+Edit the Gemfile to include "localized_scaffold" and optionally install the
+"will_paginate" gem to automatically add pagination using this library and to
+have everything around for authentication (see more on devise localization
+below):
 
-  sudo gem sources -a http://gemcutter.org  # Only needed once!
-  sudo gem install will_paginate
+  vi Gemfile
+    gem 'localized_scaffold'
+    gem 'will_paginate', '>= 3.0.pre'
+    gem 'devise', '>= 1.1.rc1'
 
-The plugin will store a standard set of localization files in "lib/locale" and
-generates a set of locale files per scaffold in "app/locale". Add these two
-directories to the i18n configuration:
+  bundle install
+
+The generated code uses "form.error_messages" which was moved to a separate
+plugin in Rails 3 for some reason. Install the plugin or implement the method
+with your own code t osee error messages:
+
+  rails plugin install git://github.com/rails/dynamic_form.git
+
+A standard set of localization files will be installed in "config/locales" and
+a set of locale files is generated per scaffold. This setup has to be
+configured in the i18n configuration:
 
   rake localized_scaffold:configure
 
-If you don't like a rake task to mess around with your environment file, edit
-"config/environment.rb") manually and add the following lines to the Rails
-initializer (only the three config lines...):
+If you don't like a rake task to mess around with your application file, edit
+"config/application.rb") manually and add the following lines to the Rails
+initializer (only the two config lines...):
 
   Rails::Initializer.run do |config|
-    config.i18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')]
-    config.i18n.load_path += Dir[Rails.root.join('app', 'locale', '*.{rb,yml}')]
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}')]
     config.i18n.default_locale = :en
   end
 
-Add more locale files by downloading them from a repository set up by Sven
-Fuchs at github (git://github.com/svenfuchs/rails-i18n.git) to "lib/locale":
+Add more locale files by downloading them from a repository set up
+by Sven Fuchs at github (git://github.com/svenfuchs/rails-i18n.git) to
+"config/locales":
 
   rake localized_scaffold:download_locales
 
@@ -58,53 +75,100 @@ As a first test, just add a sample scaffold:
 
 Now open your browser and visit "http://localhost:3000/bars" to test the
 application and finally have a look at the localization files generated in
-"app/locale".
+"config/locales".
 
 And please contribute by sending in your localized versions of the default
-and standard strings. :-)
+and standard locale files. :-)
 
-== One last thing...
+== One more thing...
 
-I couldn't resist to add two small but powerful additions I need so often: An
-optional belongs_to relation and a searchbar with an ABC strip and a small
-search form.
+I couldn't resist to add a few small but powerful additions I need so often:
+Feel free to use or ignore them.
+
+=== Method to_s()
+
+Models should return something meaningful when to_s is called on their
+objects and optional option <code>--str</code> is used to do so. The to_s
+method of the model is generated to return the provided field (therefor the
+name of the option) and its fallback is the value of the searchbar option
+(see below) or the first attribute if that is missing as well. You can
+always modify the implementation of the method afterwards.
+
+Sample using "about" instead of default first attribute "name":
+
+  rails generate localized_scaffold company name:string about:text --str about
 
 === Belongs to something
 
-There is a new option <code>--belongsto</code> which can be used to generate
-model, controller and views for something like companies having many addresses
-or phone numbers.
+There is an <code>--belongsto</code> option which can be used to generate
+model, controller and views for a "parent" belongs_to relationship like
+companies having many addresses or phone numbers.
 
 Here is a sample for exactly that:
 
   rails generate localized_scaffold company name:string about:text
 
-  rails generate localized_scaffold address --belongsto company company_id:integer \
-    what:string street:string zip:string town:string state:string country:string 
+  rails generate localized_scaffold address --belongsto company \
+    company_id:integer what:string street:string zip:string town:string \
+    state:string country:string --str address
 
-  rails generate localized_scaffold email --belongsto company company_id:integer \
-    what:string number:string
+  rails generate localized_scaffold email --belongsto company \
+    company_id:integer kind:string address:string --str address
 
-There is only little linking between the interfaces and you should double check
-your routes, but after creating a new company at "/companies/new", you will 
-be able to see all its addresses and add new ones at "/companies/1/addresses".
-Same for e-mail-addresses at "/companies/1/emails".
+There is only little linking between the interfaces and you should double
+check your routes, but after creating a new company at "/companies/new", you
+will be able to see all its addresses and add new ones at
+"/companies/1/addresses". Same for e-mail-addresses at "/companies/1/emails".
 
 === Searchbar
 
-When there are lots of records, it makes sense to have an ABC strip of the
-chars a certain field of the records start with. And it would be nice to offer
-a simple search form for fast access to known objects. That's exactly what
-new option <code>--searchbar</code> does. It supports the
-<code>--belongsto</code> option but is also  useful without.
+When there are lots of records, it makes sense to have an A B C picker and it
+would be nice to offer a simple search form for fast access to known objects.
+That's what the new <code>--searchbar</code> option does. It supports the
+<code>--belongsto</code> option but is also useful without.
 
 Here again a sample:
 
   rails generate localized_scaffold company name:string about:text \
     --searchbar name
 
-There is enough to do till you have a nice app and this is still scaffolding
-and nothing more, but it saves some more annoying work...
+=== No show...
+
+Often the show view is not needed as the index view already displays all of
+its data. Just add this option to suppress its generation. The show action is
+still generated to support the XML and JSON format but for HTML the user will
+be redirected to the index page.
+
+Here is a sample:
+
+  rails generate localized_scaffold company name:string about:text --noshow
+
+=== Embedding in parent
+
+When having a belongs_to relationship, it might be nicer to not only link to
+that data from the show view of the "parent" but to actually embed a couple
+of items and use the index view only if more than a certain amount of items
+is available. That's what the <code>--embed</code> option is for:
+
+  rails generate localized_scaffold email --belongsto company \
+    company_id:integer what:string address:string --str address --embed 4
+
+=== Listify field values
+
+Some fields only allow a certain set of values and these values have to be
+localized as well. The listify option implements such a mechanism by creating
+a set of methods in the model and preparing the localization files. Sample:
+"salutation:mr,mrs,none kind:office,private,mobile,other"
+
+And a sample:
+
+  rails generate localized_scaffold email --belongsto company \
+    company_id:integer kind:string address:string --str address \
+    --listify "kind:office,private,other"
+
+There is still enough to do till you have a nice app and this is still
+scaffolding and nothing more, but these additional options should save some
+annoying work...
 
 == Demo
 
@@ -114,31 +178,78 @@ scaffolding:
   rails phonebook
   cd phonebook
 
-  sudo gem sources -a http://gemcutter.org  # Only needed once!
-  sudo gem install will_paginate
+  vi Gemfile
+    gem 'localized_scaffold'
+    gem 'will_paginate', '>= 3.0.pre'
 
-  rails plugin install git://github.com/ulbrich/localized_scaffold.git
+  bundle install
 
-  rails plugin install git://github.com/rails/dynamic_form.git # Error messages
-
-  rake localized_scaffold:configure
   rake localized_scaffold:download_locales
+  rake localized_scaffold:configure
 
-  rails generate localized_scaffold person lastname:string firstname:string \
-    --searchbar lastname
+  rails plugin install git://github.com/rails/dynamic_form.git
+
+  vi config/application.rb
+    config.i18n.default_locale = :de # For example
+
+  rails generate localized_scaffold person salutation:string firstname:string \
+    lastname:string --searchbar lastname --listify "salutation:mr,mrs,none"
+
   rails generate localized_scaffold phone person_id:integer kind:string \
-    number:string --belongsto person
+    number:string --belongsto person --listify "kind:office,private,other" \
+    --str number --embed 5 --noshow
+
+  rails generate localized_scaffold email person_id:integer kind:string \
+    address:string --belongsto person --listify "kind:office,private,other" \
+    --str address --embed 5 --noshow
 
   rake db:migrate
+
+  vi config/routes.rb
+    root :to => 'people#index'
+
+  rm public/index.html
 
   rails server
 
 Now open http://localhost:3000/people to test the application and finally have
 a look at the localization files generated in "app/locale".
 
+== Devise
+
+There is an additional generator named "localized_devise_views" which does
+just would you would expect: It adds its own "devise_views.en.yml" etc. files
+and uses these files for localization of devise. The generated code also uses
+the title helper for title and headline which integrates better with the
+remaining application.
+
+Here are the additional steps to run a localized version of devise in the
+application above:
+
+  vi Gemfile
+    gem 'devise', '>= 1.1.rc1'
+
+  bundle install
+
+  rails generate devise_install
+
+  rails generate devise user
+
+  rails generate localized_devise_views user
+
+  rake db:migrate
+
+  vi app/controllers/application_controller.rb
+    before_filter :authenticate_user!, :except => [ :show, :index]
+
+  rails server
+
+Now open http://localhost:3000/people to test the application and check that
+you have to register to create a new person or edit an existing one.
+
 == Copyright & License
 
-Copyright (c) 2009 Jan Ulbrich
+Copyright (c) 2009, 2010 Jan Ulbrich
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

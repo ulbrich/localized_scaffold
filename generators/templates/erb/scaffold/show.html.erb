@@ -1,6 +1,4 @@
-<%- if has_searchbar? -%>
-<%% title(@<%= file_name %>.<%= searchbar %>) %>
-<%- end -%>
+<%% title(@<%= file_name %>.to_s) %>
 
 <% for attribute in attributes -%>
 <p>

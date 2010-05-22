@@ -34,6 +34,11 @@
 
     <p>
       <%%= f.submit t('standard.cmds.update') %>
+
+      <span class="decent">
+        <%%= t('standard.labels.or') %>
+        <%%= link_to t('standard.cmds.cancel'), root_path %>
+      </span>
     </p>
 <%% end %>
 

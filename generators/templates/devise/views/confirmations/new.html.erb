@@ -12,6 +12,11 @@
 
     <p>
       <%%= f.submit t('devise.views.cmds.resend_confirmation') %>
+
+      <span class="decent">
+        <%%= t('standard.labels.or') %>
+        <%%= link_to t('standard.cmds.cancel'), root_path %>
+      </span>
     </p>
 <%% end %>
 

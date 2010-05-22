@@ -6,16 +6,20 @@ require 'rails/generators/test_unit/scaffold/scaffold_generator'
 
 # Bring in our own ERB based scaffolding generator for views and layout.
 
-require File.join(File.dirname(__FILE__), 'templates', 'erb', 'scaffold', 'scaffold_generator')
+require File.join(File.dirname(__FILE__), 'templates', 'erb', 'scaffold',
+  'scaffold_generator')
 
-# To get our templates without copying them to "lib/templates" we overwrite
-# the default templates path. This has no effect unless the generator is
-# called so no need to iplement some initializer for that.
+# Configure templates without copying them to app directory "lib/templates",
+# overwriting the default templates path.
+#
+# This has no effect unless the generator is called so we don't need to
+# implement some initializer for that.
 
 module Rails # :nodoc:
   module Generators # :nodoc:
     def self.templates_path # :nodoc:
-      @templates_path = [File.expand_path(File.join(File.dirname(File.dirname(__FILE__)),
+      @templates_path = [File.expand_path(File.join(
+                          File.dirname(File.dirname(__FILE__)),
                           'generators', 'templates'))]
     end
   end
@@ -28,7 +32,8 @@ module Rails # :nodoc:
     class StylesheetsGenerator # :nodoc:
       def self.source_root
         return File.expand_path(File.join(Rails::Generators.templates_path,
-                  base_name, generator_name, 'templates'), File.dirname(__FILE__))
+                  base_name, generator_name, 'templates'),
+                  File.dirname(__FILE__))
       end
     end
   end
@@ -41,28 +46,109 @@ module TestUnit # :nodoc:
     class ScaffoldGenerator # :nodoc:
       def self.source_root
         return File.expand_path(File.join(Rails::Generators.templates_path,
-                  base_name, generator_name, 'templates'), File.dirname(__FILE__))
+                  base_name, generator_name, 'templates'),
+                  File.dirname(__FILE__))
       end
     end
   end
 end
 
-# Generator derived from the original scaffold generator plus some helper
-# methods used by the templates to control generated stuff.
+# LocalizedScaffoldGenerator implements a generator doing the same as the
+# standard scaffold generator but generating localized views. It also provides
+# a few smaller additions needed so often but respects that programmers still
+# expect scaffolding and no magic meta framework.
+#
+# The generator was not written from scratch but hijacks basic functionality
+# from the scaffolding generator overwriting lookup rules to use the right
+# templates.
 
 class LocalizedScaffoldGenerator < Rails::Generators::ScaffoldGenerator
+  desc "Does the same as the normal scaffold generator does (actually overwrites
+that code) but generates localized views. This is only implemented for ERB, so
+expect an error message being bailed out if requesting different stuff.
+
+Here is some more information about the options (as neither me nor you read
+READMEs at all):
+
+--str SOMEFIELD
+
+This option defines the attribute used as the title field. The to_s method of
+the model is generated to return this field (therefor the name of the option)
+and its fallback is the value of the searchbar option (see below) or the first
+attribute if that is missing as well.
+
+--belongs_to MODELNAME
+
+This option implements a belongs_to relationship from the generated model to
+the provided model name. It adds a has_many relationship to that model and
+generates all paths respecting this relationship. It also generates methods
+to setup the \"parent\" object and even the unit tests are written to pass.
+Be sure to add an attribute like \"modelname_id:integer\" as you will receive
+an error without.
+
+--searchbar SOMEFIELD
+
+It often would be nice to get a simple search interface and some A B C picker
+with the scaffold and that's exactly what this option does. It also adds a
+validates_presence_of for that field and generates a helper method. See that
+helper method to customize the search interface.
+
+--noshow
+
+Often the show view is not needed as the index view already displays all of
+its values. Just add this option to suppress its generation.
+
+--embed NUMBER
+
+When having a belongs_to relationship, it might be nicer to not only link to
+that data from the show view of the \"parent\" but to actually embed a couple
+of items and use the index view only if more than a certain amount of items
+is available.
+
+--listify MAPPING
+
+Some fields only allow a certain set of values and these values have to be
+localized as well. The listify option implements such a mechanism by creating
+a set of methods in the model and preparing the localization files. Sample:
+\"salutation:mr,mrs,none kind:office,private,mobile,other\"
+
+Here is a sample using all these options in two models:
+
+rails generate localized_scaffold person salutation:string firstname:string \\
+  lastname:string --searchbar lastname --listify \"salutation:mr,mrs,none\"
+
+rails generate localized_scaffold phone person_id:integer kind:string \\
+  number:string --belongsto person --embed 10 --str number --noshow \\
+  --listify \"kind:office,private,mobile,other\""
+
+  # Parsed hash with attribute names and their possible values (see listify
+  # option.
+
   attr_reader :listifies
   
   # Additional options supported by the localized scaffold generator
 
-  class_option :belongsto, :type => :string, :desc => 'Optional "parent" model this resource belongs to', :default => nil
-  class_option :searchbar, :type => :string, :desc => 'Optional attribute to generate a A B C searchbar for', :default => nil
-  class_option :noshow, :type => :boolean, :desc => 'Optional flag to suppress generation of show view', :default => nil
-  class_option :embed, :type => :string, :desc => 'Optional number of values to list in "parent" show view', :default => 0
-  class_option :listify, :type => :string, :desc => 'Optional definition of localized values for fields', :default => nil
+  class_option :str, :type => :string,
+    :desc => 'Optional attribute to return in to_s',
+    :default => nil
+  class_option :belongsto, :type => :string,
+    :desc => 'Optional "parent" model this resource belongs to',
+    :default => nil
+  class_option :searchbar, :type => :string,
+    :desc => 'Optional attribute to generate A B C picker and searchbar',
+    :default => nil
+  class_option :noshow, :type => :boolean,
+    :desc => 'Optional flag to suppress generation of show view',
+    :default => nil
+  class_option :embed, :type => :string,
+    :desc => 'Optional number of values to embed in show view of "parent"',
+    :default => 0
+  class_option :listify, :type => :string,
+    :desc => 'Optional localized values for certain fields (see below)',
+    :default => nil
 
-  # Overwritten consctructor for additional check for optional belongs_to
-  # attribute.
+  # Overwritten constructor implementing additional checks where internal
+  # class option handling is too lazy with error messages.
 
   def initialize(*)
     super
@@ -73,6 +159,10 @@ class LocalizedScaffoldGenerator < Rails::Generators::ScaffoldGenerator
 
     if shell.base.options[:searchbar] == 'searchbar'
       raise Thor::Error, '!!Missing field name for option --searchbar'
+    end
+
+    if shell.base.options[:str] == 'str'
+      raise Thor::Error, '!!Missing field name for option --str'
     end
 
     if (value = shell.base.options[:listify]) == 'listify'
@@ -95,9 +185,12 @@ class LocalizedScaffoldGenerator < Rails::Generators::ScaffoldGenerator
       attribute_name = "#{belongsto.class_name}_id".downcase
 
       if attributes.collect { |a| a.name.downcase }.index(attribute_name).nil?
-        raise Thor::Error, "!!Missing something like #{attribute_name}:integer as attribute."
+        raise Thor::Error,
+          "!!Missing something like #{attribute_name}:integer as attribute."
       end
     end
+
+    index_attributes # Call to check values
   end
 
   # Additional rule to copy scaffold helper.
@@ -123,18 +216,20 @@ class LocalizedScaffoldGenerator < Rails::Generators::ScaffoldGenerator
     locales = File.join(Rails::Generators.templates_path, 'locales')
 
     Dir.entries(locales).delete_if { |f| not f.match(/.*\.yml$/) }.each do |l|
-      template File.join(locales, l), File.join('config', 'locales', "#{file_name}.#{l}")
+      template File.join(locales, l), File.join('config', 'locales',
+        "#{file_name}.#{l}")
     end
   end
 
   # Patch application controller to make sure that scaffold layout is used
-  # and scaffold helpers are included. Patch routes and model if having a
-  # belongs_to relationship.
+  # and scaffold helpers are included. Patch routes and model if having
+  # a "parent" belongs_to relationship and patch the model with additional
+  # methods for lookup of labels of listified fields.
 
   def patch_routes_and_more
     controller = File.join('app', 'controllers', 'application_controller.rb')
 
-    if File.new(controller).grep(/layout *["'][^"']+["']/e).first.blank?
+    if File.new(controller).grep(/layout 'application'/).first.blank?
       gsub_file controller, /(.*class ApplicationController.*)$/e do |match|
         "#{match}\n  layout 'scaffold'\n"
       end
@@ -172,7 +267,17 @@ class LocalizedScaffoldGenerator < Rails::Generators::ScaffoldGenerator
       gsub_file File.join('app', 'models', "#{singular_name}.rb"),
         /^(end *)$/e do |match|
           "\n#{listify_methods.join("\n\n")}\n#{match}"
-        end
+      end
+    end
+
+    gsub_file File.join('app', 'models', "#{singular_name}.rb"),
+      /^(end *)$/e do |match|
+        "
+  # Returns something meaningful as string.
+  
+  def to_s
+    return #{to_s_attribute}
+  end\n#{match}"
     end
 
     if has_searchbar?
@@ -222,7 +327,7 @@ EOF
       gsub_file File.join('app', 'models', "#{singular_name}.rb"),
         /^(#{Regexp.escape("class #{class_name}")}.*)$/e do |match|
           "#{match}\n#{patch.chomp}"
-        end
+      end
     end
 
     if has_belongsto?
@@ -230,12 +335,12 @@ EOF
         gsub_file File.join('config', 'routes.rb'),
           /(#{Regexp.escape("resources :#{plural_name}")})/mi do |match|
             "resources :#{belongsto.plural_name} do\n    resources :#{plural_name}\n  end"
-          end
+        end
 
         gsub_file File.join('app', 'models', "#{belongsto.singular_name}.rb"),
           /^(#{Regexp.escape("class #{belongsto.class_name}")}.*)$/e do |match|
             "#{match}\n  has_many :#{plural_name}"
-          end
+        end
 
         gsub_file File.join('app', 'models', "#{singular_name}.rb"),
           /^(#{Regexp.escape("class #{class_name}")}.*)$/e do |match|
@@ -244,10 +349,11 @@ EOF
             else
               "#{match}\n  belongs_to :#{belongsto.file_name}"
             end
-          end
+        end
 
         begin
-          gsub_file File.join('app', 'views', belongsto.plural_name, 'show.html.erb'),
+          gsub_file File.join('app', 'views', belongsto.plural_name,
+            'show.html.erb'),
             /^(#{Regexp.escape("<p>\n  <%= link_to t('standard.cmds.back')")}.*)$/e do |match|
               if embed?
                 "<p>\n  <%= render :partial => '#{plural_name}/index', :locals => {
@@ -292,12 +398,14 @@ Here we go...\n\n"
   end
 end
 
-# Additional methods needed in templates.
+# Additional methods needed in templates of LocalizedScaffoldGenerator.
 
 module Rails
   module Generators
 
-    # Additional helpers needed by LocalizedScaffoldGenerator.
+    # Additional methods needed in templates of LocalizedScaffoldGenerator.
+    # Used to lookup options and implements things like assembling of routes
+    # depending on having or not having a belongs_to relationship.
 
     module ResourceHelpers
 
@@ -351,6 +459,40 @@ module Rails
         return shell.base.options[:searchbar]
       end
 
+      # Returns the field to use for the to_s method
+
+      def to_s_attribute
+        return @to_s_attribute if defined? @to_s_attribute
+
+        value = shell.base.options[:str]
+
+        if not value.blank?
+          @to_s_attribute = value
+        elsif has_searchbar?
+          @to_s_attribute = searchbar 
+        else
+          @to_s_attribute = attributes.first.name
+        end
+
+        return @to_s_attribute
+      end
+
+      # Returns a copy of the attributes array with a maximum of 4 columns
+
+      def index_attributes
+        return @index_attributes if defined? @index_attributes
+
+        parts = attributes.partition { |a| a.name == to_s_attribute }
+
+        if parts.first.empty?
+          raise Thor::Error, "!!Can not find attribute #{to_s_attribute}"
+        end
+
+        @index_attributes = parts.first + parts.last[0..3]
+        
+        return @index_attributes
+      end
+
       # Returns a hash of optional fields to handle as lists and their allowed 
       # values.
 
@@ -376,8 +518,8 @@ module Rails
         end
       end
 
-      # Returns paths like "bar_path(@bar)" or "foo_bar_(@foo, @bar)" depending
-      # on having a "parent" belongs_to relationship or not.
+      # Returns paths like "bar_path(@bar)" or "foo_bar_(@foo, @bar)" which
+      # depends on having a "parent" belongs_to relationship or not.
       #
       # Parameters:
       #
@@ -433,7 +575,7 @@ module Rails
       end
 
       # Returns true if the will_paginate gem is installed. For more infos
-      # see gem "mislav-will_paginate" on github.com.
+      # see gem "will_paginate" on github.com.
 
       def has_will_paginate?
         if not defined? @has_will_paginate
@@ -448,14 +590,16 @@ module Rails
         return @has_will_paginate
       end
 
-      # Returns true if JQuery Javascript library is there.
+      # Returns true if JQuery Javascript library is installed (found in
+      # the public javascripts directory). The fallback is to use Prototype.
 
       def has_javascript_jquery?
         return File.exists?(File.join(RAILS_ROOT, 'public', 'javascripts',
                  'jquery.js'))
       end
 
-      # Returns true if Prototype Javascript library is there.
+      # Returns true if the Prototype Javascript library is there. If JQuery
+      # can be found, it is used instead.
 
       def has_javascript_prototype?
         return File.exists?(File.join(RAILS_ROOT, 'public', 'javascripts',

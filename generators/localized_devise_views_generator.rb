@@ -8,18 +8,39 @@ require File.join(File.dirname(__FILE__), 'localized_scaffold_generator')
 
 require 'find'
 
+# LocalizedDeviseViewsGenerator implements a generator doing the same as the
+# devise_views generator shipped with devise but adding localization the same
+# way as supported by the LocalizedScaffoldGenerator.
+#
+# Devise supports some localization but only for flashes and not for views.
+# This generator adds its own "devise_views.en.yml" etc. files and uses these
+# files for further localization. It also uses the title helper for title and
+# headline which integrated better with the remaining application.
+#
+# The generator was not written from scratch but hijacks basic functionality
+# from the scaffolding generator overwriting lookup rules to use the right
+# templates.
+
 class LocalizedDeviseViewsGenerator < Erb::Generators::Base
+  desc "Creates a set of localized views for Devise using the provided model name
+to access the user.
+
+The required NAME parameter is the name of the model devise was installed to
+run with (same you called \"rails generate devise\" with e.g. \"user\")."
+
+  include Rails::Generators::ResourceHelpers
+
+  # Returns a path relative to the generators directory optionally appending
+  # the provided filename.
+  #
+  # Parameters:
+  #
+  # [filename] Filename or array of filenames to add (defaults to none)
+
   def self.generator_path(filename = '')
     return File.join(File.expand_path(File.dirname(__FILE__)), 
       'templates', 'devise', filename)
   end
-
-  desc "Creates a set of localized views for Devise using the provided model
-name to access the user."
-
-  include Rails::Generators::ResourceHelpers
-
-  class_option :layout, :type => :boolean
 
   # Creates the views directory.
 

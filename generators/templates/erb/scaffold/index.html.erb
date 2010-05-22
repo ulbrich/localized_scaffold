@@ -24,7 +24,7 @@ $("searchbar-term").onclick = function() { $("searchbar-term").value = ""; }
 <%- end -%>
 <table class="wide">
   <tr>
-  <%- for attribute in attributes -%>
+  <%- for attribute in index_attributes -%>
     <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
     <th><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %></th>
   <%- end -%>
@@ -33,7 +33,7 @@ $("searchbar-term").onclick = function() { $("searchbar-term").value = ""; }
 
   <%% @<%= plural_name %>.each do |<%= singular_name %>| %>
     <tr>
-    <%- for attribute in attributes -%>
+    <%- for attribute in index_attributes -%>
       <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
 <%- if listifies.include? attribute.name -%>
       <td><%%= <%= class_name %>.<%= attribute.name %>_label(<%= singular_name %>.<%= attribute.name %>) %></td>
@@ -66,7 +66,7 @@ $("searchbar-term").onclick = function() { $("searchbar-term").value = ""; }
   <%- if has_belongsto? -%>
     <%%= link_to t('standard.cmds.back'), <%= belongsto.singular_name %>_path(@<%= belongsto.singular_name %>) %>
   <%- else -%>
-    <%%= link_to t('standard.cmds.home'), defined?(root_path) ? root_path : '/' %>
+    <%%= link_to t('standard.cmds.home'), root_path %>
   <%- end -%>
   </span>
 </p>

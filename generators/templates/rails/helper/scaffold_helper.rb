@@ -15,4 +15,22 @@ module ScaffoldHelper
   def title(text)
     content_for(:title) { text }
   end
+
+  if not defined? root_path
+
+    # Returns a default root path if no other route has been defined so far.
+
+    def root_path
+      return url_for('/')
+    end
+  end
+
+  if not defined? root_path
+
+    # Returns a default root URL if no other route has been defined so far.
+
+    def root_url
+      return url_for('/')
+    end
+  end
 end

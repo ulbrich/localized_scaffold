@@ -83,6 +83,23 @@ table.searchbar td.selected strong {
   font-size: 130%;
 }
 
+div.pagination a {
+  border: 1px solid gray;
+  padding: 1px 3px;
+  text-decoration: none;
+}
+div.pagination a:hover {
+}
+div.pagination a.previous_page, div.pagination a.next_page {
+  border: none;
+}
+div.pagination em {
+  font-style: normal;
+}
+div.pagination span.disabled {
+  color: #808080;
+}
+
 .decent, .decent a, a.decent {
   color: #808080;
 }

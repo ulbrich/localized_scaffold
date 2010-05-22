@@ -4,10 +4,31 @@
 # the <%= class_name %>Controller.
 
 module <%= class_name %>Helper
+<%- if shell.base.has_will_paginate? -%>
+
+  # Returns an interface for pagination using the will_paginate library.
+  #
+  # Parameters:
+  #
+  # [collection] Collection to paginate with
+  # [options] Options to customize pager with
+
+  def <%= shell.base.file_name %>_pagination(collection, options = {})
+    if collection.total_entries > 1
+      pager = will_paginate(collection, { :inner_window => 10,
+                :next_label => t('standard.cmds.next_page'),
+                :previous_label => t('standard.cmds.previous_page') }.merge(options))
+
+      return (pager + ' |') if not pager.blank?
+    end
+    
+    return ''
+  end
+<%- end -%>
 <%- if shell.base.has_searchbar? -%>
 
-  # Returns HTML for a searchbar with A B C etc. to pick and a small form
-  # for searching a <%= shell.base.searchbar %>.
+  # Returns HTML for a searchbar with an A B C picker and a small form for
+  # searching a <%= shell.base.searchbar %>.
   #
   # Parameters:
   #
