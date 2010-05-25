@@ -273,6 +273,8 @@ rails generate localized_scaffold phone person_id:integer kind:string \\
     gsub_file File.join('app', 'models', "#{singular_name}.rb"),
       /^(end *)$/e do |match|
         "
+  validates_presence_of :#{to_s_attribute}
+
   # Returns something meaningful as string.
   
   def to_s

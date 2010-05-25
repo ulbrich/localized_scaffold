@@ -3,7 +3,36 @@
 # Class <%= class_name %>Helper provides helpers available in all views of
 # the <%= class_name %>Controller.
 
-module <%= class_name %>Helper
+module <%= class_name %>Helper      
+  
+  # Returns a breadcrumbs for the current object (if any).
+  
+  def <%= shell.base.file_name %>_breadcrumbs
+<%- if shell.base.has_belongsto? -%>
+    breadcrumbs = [[root_path, t('standard.cmds.home')],
+                    [<%= shell.base.belongsto.plural_name %>_path, t('<%= shell.base.belongsto.file_name %>.cmds.breadcrumb')],
+                    [<%= shell.base.belongsto.file_name %>_path(@<%= shell.base.belongsto.file_name %>), @<%= shell.base.belongsto.file_name %>.to_s]]
+
+    if defined? @<%= shell.base.file_name %> and not @<%= shell.base.file_name %>.blank?
+      breadcrumbs << [<%= shell.base.path_of_with_belongsto_if_any %>, t('<%= shell.base.file_name %>.cmds.breadcrumb')]
+      breadcrumbs << @<%= shell.base.file_name %>.to_s if not @<%= shell.base.file_name %>.new_record?
+    else
+      breadcrumbs << t('<%= shell.base.file_name %>.cmds.breadcrumb')
+    end
+<%- else -%>
+    breadcrumbs = [[root_path, t('standard.cmds.home')]]
+
+    if defined? @<%= shell.base.file_name %> and not @<%= shell.base.file_name %>.blank?
+      breadcrumbs << [<%= shell.base.path_of_with_belongsto_if_any %>, t('<%= shell.base.file_name %>.cmds.breadcrumb')]
+      breadcrumbs << @<%= shell.base.file_name %>.to_s if not @<%= shell.base.file_name %>.new_record?
+    else
+      breadcrumbs << t('<%= shell.base.file_name %>.cmds.breadcrumb')
+    end
+<%- end -%>
+
+    return breadcrumbs
+  end
+  
 <%- if shell.base.has_will_paginate? -%>
 
   # Returns an interface for pagination using the will_paginate library.

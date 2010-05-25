@@ -1,4 +1,4 @@
-<%% title(t('devise.views.sessions.title')) %>
+<%% title(t('devise.views.sessions.title'), <%= file_name %>_breadcrumbs) %>
 
 <%%= form_for(resource, :as => resource_name,
   :url => unlock_path(resource_name)) do |f| %>

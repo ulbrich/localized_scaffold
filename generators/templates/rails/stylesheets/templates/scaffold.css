@@ -26,9 +26,31 @@ a:hover {
   background-color: #000000;
 }
 
+h1 {
+  clear: both
+}
+
 label {
   color: #666666;
 }
+
+#breadcrumbs
+{
+  list-style: none;
+  font-size: 80%;
+  padding: 0;
+  margin: 0;
+}
+
+#breadcrumbs li
+{
+  display: inline;
+  padding: 0;
+  margin: 0;
+}
+
+#breadcrumbs li:before { content: " > "; }
+#breadcrumbs li:first-child:before { content: ""; }
 
 table.noborder td {
   border: 0px;

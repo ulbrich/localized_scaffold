@@ -31,7 +31,6 @@ below):
   vi Gemfile
     gem 'localized_scaffold'
     gem 'will_paginate', '>= 3.0.pre'
-    gem 'devise', '>= 1.1.rc1'
 
   bundle install
 
@@ -110,7 +109,7 @@ Here is a sample for exactly that:
 
   rails generate localized_scaffold address --belongsto company \
     company_id:integer what:string street:string zip:string town:string \
-    state:string country:string --str address
+    state:string country:string --str town
 
   rails generate localized_scaffold email --belongsto company \
     company_id:integer kind:string address:string --str address

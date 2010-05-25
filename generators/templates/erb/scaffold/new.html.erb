@@ -1,4 +1,4 @@
-<%% title(t('<%= file_name %>.new.title')) %>
+<%% title(t('<%= file_name %>.new.title'), <%= file_name %>_breadcrumbs) %>
 
 <%%= form_for(@<%= singular_name %>, :url => <%= path_of_with_belongsto_if_any(:value1 => "@#{singular_name}") %>,
   :html => { :multipart => true }) do |f| %>

@@ -1,4 +1,4 @@
-<%% title(t('devise.views.confirmations.title')) %>
+<%% title(t('devise.views.confirmations.title'), <%= file_name %>_breadcrumbs) %>
 
 <%%= form_for(resource, :as => resource_name,
   :url => confirmation_path(resource_name)) do |f| %>

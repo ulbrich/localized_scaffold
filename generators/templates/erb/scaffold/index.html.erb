@@ -1,7 +1,8 @@
 <%- if has_belongsto? -%>
-<%% title(t('<%= file_name %>.index.title', :parent => @<%= belongsto.file_name %>.id)) %>
+<%% title(t('<%= file_name %>.index.title', :parent => @<%= belongsto.file_name %>.id),
+  <%= file_name %>_breadcrumbs) %>
 <%- else -%>
-<%% title(t('<%= file_name %>.index.title')) %>
+<%% title(t('<%= file_name %>.index.title'), <%= file_name %>_breadcrumbs) %>
 <%- end -%>
 
 <%- if has_searchbar? and (has_javascript_jquery? or has_javascript_prototype?) -%>

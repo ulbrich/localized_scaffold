@@ -11,6 +11,7 @@ de:
 
   <%= file_name %>:
     cmds:
+      breadcrumb: "<%= plural_name.humanize %>"
       list: "<%= plural_name.humanize %> anzeigen"
       new: "<%= class_name %> anlegen"
 

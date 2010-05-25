@@ -28,6 +28,10 @@
 </head>
 <body>
 
+<%%- if not (breadcrumbs = yield(:breadcrumbs)).blank? -%>
+  <%%= breadcrumbs %>
+<%%- end -%>
+
 <div id="flashMessages">          
   <%%= ActiveSupport::SafeBuffer.new([:notice, :warning, :error].collect do |type|
     content_tag(:div, flash[type], :id => type, :class => type) if flash[type]

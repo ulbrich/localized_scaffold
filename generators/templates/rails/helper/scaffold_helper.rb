@@ -5,15 +5,32 @@
 
 module ScaffoldHelper
   
-  # Sets the title and headline to display (actually done in the layout file).
-  # Feel free to add more parameters for things like breadcrumbs...
+  # Sets the title and headline to display (actually done in the layout file)
+  # and optional breadcrumbs. The latter has to be an array of arrays with
+  # path and label or label if not linkable.
   #
   # Parameters:
   #
   # [title] Title to set
+  # [breadcrumbs] Optional breadcrumbs to set
 
-  def title(text)
-    content_for(:title) { text }
+  def title(title, breadcrumbs = nil)
+    content_for(:title) { title }
+
+    if not breadcrumbs.blank?
+      content_for(:breadcrumbs) {
+        cols = breadcrumbs.collect do |b|
+          if b.kind_of? Array then
+            content_tag(:li, link_to(b.last, b.first))
+          else
+            content_tag(:li, b, :class => 'decent')
+          end
+        end
+
+       content_tag(:ul, ActiveSupport::SafeBuffer.new(cols.join),
+         :id => 'breadcrumbs')
+      }
+    end
   end
 
   if not defined? root_path
