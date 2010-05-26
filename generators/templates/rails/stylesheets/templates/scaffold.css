@@ -143,6 +143,7 @@ a.small:hover {
 }
 #flashMessages div {
   padding: 7px;
+  margin-top: 7px;
   margin-bottom: 10px;
 }
 #flashMessages div.notice {
