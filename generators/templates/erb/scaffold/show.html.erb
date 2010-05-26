@@ -3,7 +3,11 @@
 <% for attribute in attributes -%>
 <p>
   <b><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %>:</b>
+<%- if listifies.include? attribute.name -%>
+  <%%= <%= class_name %>.<%= attribute.name %>_label(@<%= singular_name %>.<%= attribute.name %>) %>
+<%- else -%>
   <%%=h @<%= singular_name %>.<%= attribute.name %> %>
+<%- end -%>
 </p>
 
 <%- end -%>

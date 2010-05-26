@@ -14,7 +14,14 @@ module <%= class_name %>Helper
                     [<%= shell.base.belongsto.file_name %>_path(@<%= shell.base.belongsto.file_name %>), @<%= shell.base.belongsto.file_name %>.to_s]]
 
     if defined? @<%= shell.base.file_name %> and not @<%= shell.base.file_name %>.blank?
+<%- if shell.base.embed? -%>
+      if @<%= shell.base.file_name %>.<%= shell.base.belongsto.file_name %>.<%= shell.base.table_name %>.count > <%= shell.base.class_name %>::PARENT_EMBED
+        breadcrumbs << [<%= shell.base.path_of_with_belongsto_if_any %>, t('<%= shell.base.file_name %>.cmds.breadcrumb')]
+      end
+
+<%- else -%>
       breadcrumbs << [<%= shell.base.path_of_with_belongsto_if_any %>, t('<%= shell.base.file_name %>.cmds.breadcrumb')]
+<%- end -%>
       breadcrumbs << @<%= shell.base.file_name %>.to_s if not @<%= shell.base.file_name %>.new_record?
     else
       breadcrumbs << t('<%= shell.base.file_name %>.cmds.breadcrumb')

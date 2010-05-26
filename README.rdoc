@@ -107,12 +107,12 @@ Here is a sample for exactly that:
 
   rails generate localized_scaffold company name:string about:text
 
-  rails generate localized_scaffold address --belongsto company \
-    company_id:integer what:string street:string zip:string town:string \
-    state:string country:string --str town
+  rails generate localized_scaffold address company_id:integer what:string \
+    street:string zip:string town:string state:string country:string \
+    --belongsto company --str town
 
-  rails generate localized_scaffold email --belongsto company \
-    company_id:integer kind:string address:string --str address
+  rails generate localized_scaffold email company_id:integer kind:string \
+    address:string --belongsto company --str address
 
 There is only little linking between the interfaces and you should double
 check your routes, but after creating a new company at "/companies/new", you
@@ -149,8 +149,8 @@ that data from the show view of the "parent" but to actually embed a couple
 of items and use the index view only if more than a certain amount of items
 is available. That's what the <code>--embed</code> option is for:
 
-  rails generate localized_scaffold email --belongsto company \
-    company_id:integer what:string address:string --str address --embed 4
+  rails generate localized_scaffold email company_id:integer what:string \
+    address:string --belongsto company --str address --embed 4
 
 === Listify field values
 
@@ -161,8 +161,8 @@ a set of methods in the model and preparing the localization files. Sample:
 
 And a sample:
 
-  rails generate localized_scaffold email --belongsto company \
-    company_id:integer kind:string address:string --str address \
+  rails generate localized_scaffold email company_id:integer kind:string \
+    address:string --belongsto company --str address \
     --listify "kind:office,private,other"
 
 There is still enough to do till you have a nice app and this is still
@@ -195,7 +195,8 @@ scaffolding:
     lastname:string --searchbar lastname --listify "salutation:mr,mrs,none"
 
   rails generate localized_scaffold phone person_id:integer kind:string \
-    number:string --belongsto person --listify "kind:office,private,other" \
+    number:string --belongsto person \
+    --listify "kind:office,private,mobile,fax,other" \
     --str number --embed 5 --noshow
 
   rails generate localized_scaffold email person_id:integer kind:string \

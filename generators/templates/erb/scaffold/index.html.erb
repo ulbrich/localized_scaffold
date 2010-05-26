@@ -27,7 +27,7 @@ $("searchbar-term").onclick = function() { $("searchbar-term").value = ""; }
   <tr>
   <%- for attribute in index_attributes -%>
     <%- next if has_belongsto? and attribute.name == "#{belongsto.file_name}_id" -%>
-    <th><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %></th>
+    <th width="<%= 75 / index_attributes.length %>%"><%%= t('activerecord.attributes.<%= file_name %>.<%= attribute.name %>') %></th>
   <%- end -%>
     <th>&nbsp;</th>
   </tr>

@@ -229,9 +229,13 @@ rails generate localized_scaffold phone person_id:integer kind:string \\
   def patch_routes_and_more
     controller = File.join('app', 'controllers', 'application_controller.rb')
 
-    if File.new(controller).grep(/layout 'application'/).first.blank?
+    if (found = File.new(controller).grep(/layout '[^']*'/).first).blank?
       gsub_file controller, /(.*class ApplicationController.*)$/e do |match|
         "#{match}\n  layout 'scaffold'\n"
+      end
+    elsif found.index("'application'")
+      gsub_file controller, /layout 'application'/e do |match|
+        "layout 'scaffold'"
       end
     end
 
@@ -242,7 +246,7 @@ rails generate localized_scaffold phone person_id:integer kind:string \\
     end
 
     listify_methods = @listifies.collect do |field, values|
-      values = values.collect { |v| ':' + v }.join(', ')
+      values = values.collect { |v| ':' + v.downcase }.join(', ')
 
       "  # Returns an array with allowed #{field} values.
 
@@ -335,8 +339,8 @@ EOF
     if has_belongsto?
       unless options[:pretend]
         gsub_file File.join('config', 'routes.rb'),
-          /(#{Regexp.escape("resources :#{plural_name}")})/mi do |match|
-            "resources :#{belongsto.plural_name} do\n    resources :#{plural_name}\n  end"
+          /^  (#{Regexp.escape("resources :#{plural_name}")})$/mi do |match|
+            "  resources :#{belongsto.plural_name} do\n    resources :#{plural_name}\n  end"
         end
 
         gsub_file File.join('app', 'models', "#{belongsto.singular_name}.rb"),

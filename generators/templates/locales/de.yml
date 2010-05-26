@@ -20,7 +20,7 @@ de:
 <%- listifies.each do |field, values| -%>
       <%= field %>:
 <%- values.each do |value| -%>
-        <%= value %>: <%= value.humanize %>
+        <%= value.downcase %>: "<%= value.humanize %>"
 <%- end -%>
 
 <%- end -%>
