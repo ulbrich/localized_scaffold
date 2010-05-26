@@ -276,9 +276,13 @@ rails generate localized_scaffold phone person_id:integer kind:string \\
 
     gsub_file File.join('app', 'models', "#{singular_name}.rb"),
       /^(end *)$/e do |match|
-        "
-  validates_presence_of :#{to_s_attribute}
+        validates = ''
 
+        if to_s_attribute != searchbar
+          validates = "\n  validates_presence_of :#{to_s_attribute}\n"
+        end
+
+        validates + "
   # Returns something meaningful as string.
   
   def to_s
@@ -492,6 +496,10 @@ module Rails
 
         if parts.first.empty?
           raise Thor::Error, "!!Can not find attribute #{to_s_attribute}"
+        end
+
+        if has_belongsto?
+          parts.last.delete_if { |a| a.name == "#{belongsto.file_name}_id" }
         end
 
         @index_attributes = parts.first + parts.last[0..3]
