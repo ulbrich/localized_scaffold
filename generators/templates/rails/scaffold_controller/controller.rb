@@ -276,7 +276,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         flash[:error] = t('<%= file_name %>.errors.not_found')
 
         respond_to do |format|
-          format.html { redirect_to(defined?(home_path) ? home_path : '/') }
+          format.html { redirect_to root_path }
           format.xml  { head 404 }
           format.json { head 404 }
         end
@@ -298,7 +298,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         flash[:error] = _('<%= belongsto.file_name %>.errors.not_found')
 
         respond_to do |format|
-          format.html { redirect_to(defined?(home_path) ? home_path : '/') }
+          format.html { redirect_to root_path }
           format.xml  { head 404 }
           format.json { head 404 }
         end
