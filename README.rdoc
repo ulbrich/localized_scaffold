@@ -10,6 +10,9 @@ interface.
 Just give it a try and toss it away if you don't like it -- it's pretty easy
 to have a test drive...
 
+And a note about versions: This is the last version I guess for Rails 2. The
+master branch will switch to Rails 3 now.
+
 == Installation and usage
 
 Here are the steps to get a first impression about the plugin:
