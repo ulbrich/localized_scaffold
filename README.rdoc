@@ -13,11 +13,8 @@ Just give it a try and toss it away if you don't like it -- it's pretty easy
 to have a test drive (see sample below).
 
 Rails 2: There is a Rails 2 compatible version which has to be installed as
-a Rails plugin instead of a gem. The latest version can be installed with
-[...].
-
-And a note about versions: This is the last version I guess for Rails 2. The
-master branch will switch to Rails 3 now.
+a Rails plugin instead of a gem. The latest Rails 2 version can be installed
+from branch "rails2".
 
 == Installation and usage
 
