@@ -16,6 +16,9 @@ Rails 2: There is a Rails 2 compatible version which has to be installed as
 a Rails plugin instead of a gem. The latest version can be installed with
 [...].
 
+And a note about versions: This is the last version I guess for Rails 2. The
+master branch will switch to Rails 3 now.
+
 == Installation and usage
 
 Here are the steps to get a first impression about the generator:
