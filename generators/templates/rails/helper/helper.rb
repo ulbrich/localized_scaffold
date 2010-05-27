@@ -47,15 +47,17 @@ module <%= class_name %>Helper
   # Parameters:
   #
   # [collection] Collection to paginate with
-  # [options] Options to customize pager with
+  # [options] Options to customize pager with plus own :delimiter option
 
   def <%= shell.base.file_name %>_pagination(collection, options = {})
-    if collection.total_entries > 1
+    delimiter = options.delete(:delimiter) || '|'
+
+    if collection.total_pages > 1
       pager = will_paginate(collection, { :inner_window => 10,
                 :next_label => t('standard.cmds.next_page'),
                 :previous_label => t('standard.cmds.previous_page') }.merge(options))
 
-      return (pager + ' |') if not pager.blank?
+      return (pager + ' ' + delimiter) if not pager.blank?
     end
     
     return ''
@@ -70,27 +72,44 @@ module <%= class_name %>Helper
   #
   # [chars] Array with chars the <%= shell.base.searchbar %> of existing <%= plural_name %> start with
   # [term] Search term to render with
+  # [:options] Options to customize
+  #
+  # Options:
+  #
+  # [:type] What to render (:abc, :form or :both)
+  # [:default] Default search term to show in input field (localized value)
+  # [:size] Size of input field (defaults to 12)
 
-  def <%= shell.base.file_name %>_searchbar(chars, term)
-    cols = ('a'..'z').collect do |c|
-      if (same = ((not term.blank?) and c.upcase == term.upcase))
-        inner = content_tag(:strong, c.upcase)
-      elsif chars.include? c
-        inner = link_to(c.upcase, <%= shell.base.path_of_with_belongsto_if_any(:extraargs => ':q => c') %>)
-      else
-        inner = c.upcase
+  def <%= shell.base.file_name %>_searchbar(chars, term, options = {})
+    type = options[:type] || 'both'
+    default = options[:default] || t('standard.cmds.search')
+    size = options[:size] || 12
+
+    if type == :form
+      cols = []
+    else
+      cols = ('a'..'z').collect do |c|
+        if (same = ((not term.blank?) and c.upcase == term.upcase))
+          inner = content_tag(:strong, c.upcase)
+        elsif chars.include? c
+          inner = link_to(c.upcase, <%= shell.base.path_of_with_belongsto_if_any(:extraargs => ':q => c') %>)
+        else
+          inner = c.upcase
+        end
+
+        content_tag(:td, inner, :class => (same ? 'selected' : nil))
       end
-
-      content_tag(:td, inner, :class => (same ? 'selected' : nil))
     end
 
-    value = (term.blank? or term.length > 1) ? term : t('standard.cmds.search')
-    form = content_tag(:form, tag(:input, :type => :text,
-             :id => 'searchbar-term', :name => 'q', :size => 12,
-             :value => value), :method => 'get', :id => 'searchbar-form',
-             :action => <%= shell.base.path_of_with_belongsto_if_any %>)
+    if type != :abc
+      value = (term.blank? or term.length > 1) ? term : default
+      form = content_tag(:form, tag(:input, :type => :text,
+               :id => 'searchbar-term', :name => 'q', :size => size,
+               :value => value), :method => 'get', :id => 'searchbar-form',
+               :action => <%= shell.base.path_of_with_belongsto_if_any %>)
 
-    cols << content_tag(:td, form)
+      cols << content_tag(:td, form)
+    end
 
     return content_tag(:table, content_tag(:tr,
              ActiveSupport::SafeBuffer.new(cols.join)), :class => 'searchbar')

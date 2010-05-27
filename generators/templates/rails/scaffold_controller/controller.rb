@@ -76,7 +76,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
     respond_to do |format|
 <%- if not has_belongsto? or has_searchbar? or not embed? -%>
-      format.html # index.html.erb
+      format.html { redirect_to(<%= path_of_with_belongsto_if_any %>) if not params[:q].blank? and @<%= table_name %>.empty? }
 <%- else -%>
       format.html { flash.keep && redirect_to(<%= belongsto.singular_name %>_path(@<%= belongsto.singular_name %>)) if @<%= table_name %>.count <= <%= class_name %>::PARENT_EMBED }
 <%- end -%>

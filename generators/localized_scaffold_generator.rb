@@ -383,7 +383,7 @@ around with your models, views and routes:
 
 1) The following is added to your routes and you might have a second look:
 
-resources :#{belongsto.plural_name} do |#{belongsto.plural_name}|
+resources :#{belongsto.plural_name} do
   resources :#{plural_name}
 end
 

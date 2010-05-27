@@ -9,7 +9,7 @@
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <%%- if (title = yield(:title)).blank? -%>
-  <title><%%= controller.controller_name + ':' + controller.action_name %></title>
+  <title><%%= controller.controller_name.humanize %></title>
 <%%- else -%>
   <title><%%= title %></title>
 <%%- end -%>
