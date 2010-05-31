@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.platform = "ruby"
   spec.name = "localized_scaffold"
   spec.homepage = "http://github.com/ulbrich/localized_scaffold"
-  spec.version = "0.9.1"
+  spec.version = "0.9.2"
   spec.author = "Jan Ulbrich"
   spec.email = "jan @nospam@ ulbrich.net"
   spec.summary = "Localized Rails scaffolding with style..."

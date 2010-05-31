@@ -1,5 +1,5 @@
 <%- if has_belongsto? -%>
-<%% title(t('<%= file_name %>.index.title', :parent => @<%= belongsto.file_name %>.id),
+<%% title(t('<%= file_name %>.index.title', :parent => @<%= belongsto.file_name %>.to_s),
   <%= file_name %>_breadcrumbs) %>
 <%- else -%>
 <%% title(t('<%= file_name %>.index.title'), <%= file_name %>_breadcrumbs) %>

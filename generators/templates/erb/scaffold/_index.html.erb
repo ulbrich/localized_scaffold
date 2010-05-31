@@ -1,6 +1,6 @@
 <%- if has_belongsto? -%>
 <h3>
-  <%%= t('<%= file_name %>.indexpartial.title', :parent => @<%= belongsto.file_name %>.id) %>
+  <%%= t('<%= file_name %>.indexpartial.title', :parent => @<%= belongsto.file_name %>.to_s) %>
 <%- else -%>
 <h3>
   <%%= t('<%= file_name %>.indexpartial.title') %>
