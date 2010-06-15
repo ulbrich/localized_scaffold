@@ -266,11 +266,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     # Before filter setting up @<%= file_name %> needed by most actions.
 
     def setup_<%= file_name %>
-    <%- if has_belongsto? -%>
-      @<%= file_name %> = @<%= belongsto.file_name %>.<%= table_name %>.find(params[:id])
-    <%- else -%>
       @<%= file_name %> = <%= class_name %>.find(params[:id])
-    <%- end -%>
 
       if @<%= file_name %>.nil?
         flash[:error] = t('<%= file_name %>.errors.not_found')
@@ -283,6 +279,10 @@ class <%= controller_class_name %>Controller < ApplicationController
 
         return false
       end
+    <%- if has_belongsto? -%>
+
+      @<%= belongsto.file_name %> = @<%= file_name %>.<%= belongsto.file_name %>
+    <%- end -%>
 
       return true
     end
@@ -292,6 +292,8 @@ class <%= controller_class_name %>Controller < ApplicationController
     # needed by most actions.
 
     def setup_<%= belongsto.file_name %>
+      return if params[:<%= belongsto.file_name %>_id].blank?
+
       @<%= belongsto.file_name %> = <%= belongsto.class_name %>.find(params[:<%= belongsto.file_name %>_id])
 
       if @<%= belongsto.file_name %>.nil?

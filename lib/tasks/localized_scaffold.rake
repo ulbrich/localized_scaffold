@@ -19,7 +19,7 @@ namespace :localized_scaffold do
     puts 'Done'
   end
 
-  desc 'Adds i18n config to Rails::Initializer section of environment.rb.'
+  desc 'Adds i18n config to Rails::Initializer section of application.rb.'
   task :configure => [:environment] do
     patch = <<EOF
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}')]
