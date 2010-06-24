@@ -70,7 +70,7 @@ module <%= class_name %>Helper
   #
   # Parameters:
   #
-  # [chars] Array with chars the <%= shell.base.searchbar %> of existing <%= plural_name %> start with
+  # [chars] Array with <%= shell.base.searchbar %> chars of existing <%= plural_name %> start with
   # [term] Search term to render with
   # [:options] Options to customize
   #
@@ -79,11 +79,15 @@ module <%= class_name %>Helper
   # [:type] What to render (:abc, :form or :both)
   # [:default] Default search term to show in input field (localized value)
   # [:size] Size of input field (defaults to 12)
+  # [:format] Type of HTML to generate (:table or :ul defaulting to :table)
 
   def <%= shell.base.file_name %>_searchbar(chars, term, options = {})
     type = options[:type] || 'both'
     default = options[:default] || t('standard.cmds.search')
     size = options[:size] || 12
+
+    format = options[:format] || :table
+    inner_tag = (format == :ul ? 'li' : 'td')
 
     if type == :form
       cols = []
@@ -97,18 +101,25 @@ module <%= class_name %>Helper
           inner = c.upcase
         end
 
-        content_tag(:td, inner, :class => (same ? 'selected' : nil))
+        content_tag(inner_tag, inner, :class => (same ? 'selected' : nil))
       end
     end
 
     if type != :abc
       value = (term.blank? or term.length > 1) ? term : default
-      form = content_tag(:form, tag(:input, :type => :text,
+      form = content_tag(:form, tag(:input, :type => :search,
                :id => 'searchbar-term', :name => 'q', :size => size,
                :value => value), :method => 'get', :id => 'searchbar-form',
                :action => <%= shell.base.path_of_with_belongsto_if_any %>)
 
-      cols << content_tag(:td, form)
+      return form if type == :form
+
+      cols << content_tag(inner_tag, form)
+    end
+
+    if format == :ul
+      return content_tag(:ul, ActiveSupport::SafeBuffer.new(cols.join),
+               :class => 'searchbar')
     end
 
     return content_tag(:table, content_tag(:tr,
