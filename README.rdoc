@@ -239,6 +239,9 @@ application above:
 
   rake db:migrate
 
+  vi config/environments/development.rb
+    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
   vi app/controllers/application_controller.rb
     before_filter :authenticate_user!, :except => [ :show, :index]
 
