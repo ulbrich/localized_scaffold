@@ -27,8 +27,7 @@ module ScaffoldHelper
           end
         end
 
-       content_tag(:ul, ActiveSupport::SafeBuffer.new(cols.join),
-         :id => 'breadcrumbs')
+        content_tag(:ul, raw(cols.join), :id => 'breadcrumbs')
       }
     end
   end

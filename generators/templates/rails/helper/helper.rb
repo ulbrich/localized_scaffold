@@ -118,12 +118,11 @@ module <%= class_name %>Helper
     end
 
     if format == :ul
-      return content_tag(:ul, ActiveSupport::SafeBuffer.new(cols.join),
-               :class => 'searchbar')
+      return content_tag(:ul, raw(cols.join), :class => 'searchbar')
     end
 
-    return content_tag(:table, content_tag(:tr,
-             ActiveSupport::SafeBuffer.new(cols.join)), :class => 'searchbar')
+    return content_tag(:table, content_tag(:tr, raw(cols.join)),
+             :class => 'searchbar')
   end
 <%- end -%>
 end
