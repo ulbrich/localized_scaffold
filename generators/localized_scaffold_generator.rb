@@ -308,8 +308,8 @@ rails generate localized_scaffold phone person_id:integer kind:string \\
              :select => 'lower(substr(#{searchbar}, 1, 1)) as #{searchbar}_chars,
                count(*) as count',
              :conditions => ['#{belongsto.file_name}_id == ?', #{belongsto.file_name}_id],
-             :order => 'lower(substr(#{searchbar}_chars, 1, 1)) asc',
-             :group => 'lower(substr(#{searchbar}_chars, 1, 1))').collect { |s|
+             :order => 'lower(substr(#{searchbar}, 1, 1)) asc',
+             :group => 'lower(substr(#{searchbar}, 1, 1))').collect { |s|
                [s.#{searchbar}_chars, s.count]
              }
   end
@@ -326,8 +326,8 @@ EOF
     return #{class_name}.find(:all,
              :select => 'lower(substr(#{searchbar}, 1, 1)) as #{searchbar}_chars,
                count(*) as count',
-             :order => 'lower(substr(#{searchbar}_chars, 1, 1)) asc',
-             :group => 'lower(substr(#{searchbar}_chars, 1, 1))').collect { |s|
+             :order => 'lower(substr(#{searchbar}, 1, 1)) asc',
+             :group => 'lower(substr(#{searchbar}, 1, 1))').collect { |s|
                [s.#{searchbar}_chars, s.count]
              }
   end

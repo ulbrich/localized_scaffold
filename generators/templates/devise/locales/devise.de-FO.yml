@@ -40,6 +40,9 @@ en:
       unlocked: "Ihr Account wurde erfolgreich entsperrt. Sie sind nun
         angemeldet."
     mailer:
-      confirmation_instructions: "Anleitung für die Aktivierung Ihres Accounts"
-      reset_password_instructions: "Anleitung für das Zurücksetzen Ihres Passworts"
-      unlock_instructions: "Anleitung für das Entsperren Ihres Accounts"
+      confirmation_instructions:
+        subject: "Anleitung für die Aktivierung Ihres Accounts"
+      reset_password_instructions:
+        subject: "Anleitung für das Zurücksetzen Ihres Passworts"
+      unlock_instructions:
+        subject: "Anleitung für das Entsperren Ihres Accounts"

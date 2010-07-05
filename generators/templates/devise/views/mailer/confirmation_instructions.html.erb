@@ -1,4 +1,4 @@
-<%%= t('devise.views.mailer.confirmation_instructions.text', :account => @resource.email) %>
+<%%= raw(t('devise.views.mailer.confirmation_instructions.text', :account => @resource.email)) %>
 
 <p>
   <%%= link_to t('devise.views.cmds.confirm_account'),
