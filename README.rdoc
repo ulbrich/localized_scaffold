@@ -20,25 +20,21 @@ from branch "rails2".
 
 Here are the steps to get a first impression about the generator:
 
-  rails foo
+  rails new foo
   cd foo
 
 Edit the Gemfile to include "localized_scaffold" and optionally install the
-"will_paginate" gem to automatically add pagination using this library and to
-have everything around for authentication (see more on devise localization
-below):
+"will_paginate" gem to automatically add pagination using this library. The
+generated code uses "form.error_messages" which was moved to a separate
+plugin in Rails 3 for some reason. Install that gem or implement the method
+with your own code to see error messages.
 
   vi Gemfile
     gem 'localized_scaffold'
     gem 'will_paginate', '>= 3.0.pre'
+    gem 'dynamic_form'
 
   bundle install
-
-The generated code uses "form.error_messages" which was moved to a separate
-plugin in Rails 3 for some reason. Install the plugin or implement the method
-with your own code t osee error messages:
-
-  rails plugin install git://github.com/rails/dynamic_form.git
 
 A standard set of localization files will be installed in "config/locales" and
 a set of locale files is generated per scaffold. This setup has to be
@@ -174,19 +170,18 @@ annoying work...
 As a wrap up, here is a complete sample of a simple phone book only using
 scaffolding:
 
-  rails phonebook
+  rails new phonebook
   cd phonebook
 
   vi Gemfile
     gem 'localized_scaffold'
     gem 'will_paginate', '>= 3.0.pre'
+    gem 'dynamic_form'
 
   bundle install
 
   rake localized_scaffold:download_locales
   rake localized_scaffold:configure
-
-  rails plugin install git://github.com/rails/dynamic_form.git
 
   vi config/application.rb
     config.i18n.default_locale = :de # For example
@@ -224,14 +219,15 @@ the title helper for title and headline which integrates better with the
 remaining application.
 
 Here are the additional steps to run a localized version of devise in the
-application above:
+application above. And be sure to have at least Rails 3.0.0.beta4 required in
+your Gemfile as the newest devise version fails with prior betas...
 
   vi Gemfile
-    gem 'devise', '>= 1.1.rc2'
+    gem 'devise', '>= 1.1.3'
 
   bundle install
 
-  rails generate devise_install
+  rails generate devise:install
 
   rails generate devise user
 
